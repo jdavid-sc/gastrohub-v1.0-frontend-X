@@ -2,7 +2,7 @@ import { Injectable, inject, signal, computed, PLATFORM_ID } from '@angular/core
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, throwError, map } from 'rxjs';
+import { Observable, tap, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../environments/environment';
 import { LoginRequest, TokenResponse, PasswordResetRequest, PasswordResetConfirm } from '../models/auth.model';
@@ -93,10 +93,8 @@ export class AuthService {
   }
 
   /**
-   * Obtiene el perfil del usuario autenticado.
-   * El JWT del backend usa el EMAIL como "sub", no un ID numérico.
-   * - Si sub es numérico → GET /usuarios/{id}
-   * - Si sub es email → GET /usuarios/ y filtra por email
+   * Obtiene el perfil del usuario autenticado usando GET /usuarios/{id}.
+   * Busca el ID en el campo "user_id" del JWT, o en "sub" si es numérico.
    */
   fetchCurrentUser(): Observable<Usuario> {
     const token = this.getToken();
@@ -112,33 +110,18 @@ export class AuthService {
       return throwError(() => new Error('Token inválido.'));
     }
 
-    const sub = decoded.sub;
-    const numericId = parseInt(sub, 10);
+    // Intentar obtener el ID del usuario desde el JWT
+    const userId = decoded['user_id'] ?? decoded['id'] ?? decoded.sub;
+    const numericId = typeof userId === 'number' ? userId : parseInt(String(userId), 10);
 
-    // Si el sub es un ID numérico, consultar directo por ID
-    if (!isNaN(numericId)) {
-      console.log('[Auth] sub es numérico, usando GET /usuarios/' + numericId);
-      return this.http.get<Usuario>(`${this.apiUrl}/usuarios/${numericId}`).pipe(
-        tap(user => {
-          console.log('[Auth] Usuario obtenido:', user);
-          this._currentUser.set(user);
-          this.persistUser(user);
-        })
-      );
+    if (isNaN(numericId)) {
+      return throwError(() => new Error('No se pudo obtener el ID del usuario desde el token.'));
     }
 
-    // Si el sub es un email, buscar en la lista de usuarios
-    console.log('[Auth] sub es email:', sub, '→ buscando en GET /usuarios/');
-    return this.http.get<Usuario[]>(`${this.apiUrl}/usuarios/`).pipe(
-      map(usuarios => {
-        const found = usuarios.find(u => u.email === sub);
-        if (!found) {
-          throw new Error(`No se encontró usuario con email: ${sub}`);
-        }
-        return found;
-      }),
+    console.log('[Auth] Obteniendo usuario por ID:', numericId);
+    return this.http.get<Usuario>(`${this.apiUrl}/usuarios/${numericId}`).pipe(
       tap(user => {
-        console.log('[Auth] Usuario encontrado:', user);
+        console.log('[Auth] Usuario obtenido:', user);
         this._currentUser.set(user);
         this.persistUser(user);
       })
