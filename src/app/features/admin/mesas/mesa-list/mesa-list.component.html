@@ -1,0 +1,47 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-with-back">
+      <a routerLink="/admin/dashboard" class="btn btn-back">&#8592; Inicio</a>
+      <div>
+        <h2>Mesas</h2>
+        <p>Configuración de mesas del restaurante</p>
+      </div>
+    </div>
+    <a routerLink="/admin/mesas/nueva" class="btn btn-primary">+ Nueva Mesa</a>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Número</th>
+          <th>Capacidad</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (mesa of mesas(); track mesa.id) {
+          <tr>
+            <td>{{ mesa.id }}</td>
+            <td class="font-medium">Mesa {{ mesa.numero }}</td>
+            <td>{{ mesa.capacidad }} personas</td>
+            <td>
+              <span class="badge" [class.badge-success]="mesa.estado === 'LIBRE'" [class.badge-danger]="mesa.estado === 'OCUPADA'">
+                {{ mesa.estado }}
+              </span>
+            </td>
+            <td class="actions">
+              <button class="btn btn-sm btn-danger" (click)="onDelete(mesa.id)">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="empty-state">No hay mesas registradas</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>Historial de Pagos</h2>
+      <p>Registro de transacciones realizadas</p>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Pedido</th>
+          <th>Total</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pago of pagos(); track pago.id) {
+          <tr>
+            <td>{{ pago.id }}</td>
+            <td>Pedido #{{ pago.pedido_id }}</td>
+            <td class="price">$ {{ pago.total | number:'1.2-2' }}</td>
+            <td>{{ pago.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" class="empty-state">No hay pagos registrados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

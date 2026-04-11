@@ -1,0 +1,50 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>Mis Pedidos</h2>
+      <p>Historial de pedidos realizados</p>
+    </div>
+    <a routerLink="/mesero/pedidos/nuevo" class="btn btn-primary">+ Nuevo Pedido</a>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Mesa</th>
+          <th>Estado</th>
+          <th>Total</th>
+          <th>Pago</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pedido of pedidos(); track pedido.id) {
+          <tr>
+            <td>#{{ pedido.id }}</td>
+            <td class="font-medium">Mesa {{ pedido.mesa.numero }}</td>
+            <td>
+              <span class="badge" [class.badge-warning]="pedido.estado === 'ABIERTO'" [class.badge-info]="pedido.estado === 'CERRADO'">
+                {{ pedido.estado }}
+              </span>
+            </td>
+            <td class="price">$ {{ pedido.total | number:'1.2-2' }}</td>
+            <td>
+              <span class="badge" [class.badge-success]="pedido.pago" [class.badge-neutral]="!pedido.pago">
+                {{ pedido.pago ? 'Pagado' : 'Pendiente' }}
+              </span>
+            </td>
+            <td>
+              <a [routerLink]="['/mesero/pedidos', pedido.id]" class="btn btn-sm btn-secondary">Ver detalle</a>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">No tienes pedidos registrados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

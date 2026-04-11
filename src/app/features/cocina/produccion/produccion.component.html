@@ -1,0 +1,58 @@
+<div class="produccion-page">
+  <div class="page-header">
+    <div>
+      <h2>Cocina</h2>
+      <p>Hola, <strong>{{ authService.user()?.nombre }}</strong> — platos por preparar</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="loadDetalles()">&#x21BB; Actualizar</button>
+      <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+    </div>
+  </div>
+
+  @if (detalles().length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">✅</div>
+      <p>No hay platos pendientes por preparar</p>
+    </div>
+  }
+
+  <div class="detalles-grid">
+    @for (d of detalles(); track d.id) {
+      <div class="detalle-card" [class.pendiente]="d.estado === 'PENDIENTE'" [class.preparando]="d.estado === 'PREPARANDO'">
+        <div class="card-header">
+          <span class="pedido-badge">Pedido #{{ d.pedido_id }}</span>
+          <span class="badge" [class.badge-warning]="d.estado === 'PENDIENTE'" [class.badge-info]="d.estado === 'PREPARANDO'">
+            {{ d.estado }}
+          </span>
+        </div>
+
+        <h3 class="producto-nombre">{{ d.producto.nombre }}</h3>
+
+        <div class="card-details">
+          <div class="detail-row">
+            <span class="detail-label">Cantidad</span>
+            <span class="detail-value">{{ d.cantidad }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Notas</span>
+            <span class="detail-value notas">{{ d.descripcion ?? 'Ninguna' }}</span>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          @if (d.estado === 'PENDIENTE') {
+            <button class="btn btn-warning btn-action" (click)="cambiarEstado(d.id, 'PREPARANDO')">
+              🔥 Empezar a preparar
+            </button>
+          }
+          @if (d.estado === 'PREPARANDO') {
+            <button class="btn btn-success btn-action" (click)="cambiarEstado(d.id, 'LISTO')">
+              ✅ Marcar como listo
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

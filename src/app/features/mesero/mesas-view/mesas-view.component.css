@@ -1,0 +1,80 @@
+.mesas-page {
+  padding: var(--spacing-xl);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-header p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.mesas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.mesa-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  transition: all var(--transition-normal);
+  border: 2px solid transparent;
+}
+
+.mesa-card.libre {
+  border-color: var(--color-success);
+}
+
+.mesa-card.libre:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.mesa-card.ocupada {
+  border-color: var(--color-accent);
+  opacity: 0.7;
+}
+
+.mesa-numero {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.mesa-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.mesa-capacidad {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.btn-crear {
+  width: 100%;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--spacing-2xl);
+  font-style: italic;
+}

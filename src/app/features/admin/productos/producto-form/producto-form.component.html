@@ -1,0 +1,41 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-with-back">
+      <button class="btn btn-back" (click)="onCancel()">&#8592; Atrás</button>
+      <h2>{{ isEdit() ? 'Editar' : 'Crear' }} Producto</h2>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <form (ngSubmit)="onSubmit()" class="form-layout">
+      <div class="form-group">
+        <label for="nombre">Nombre del producto</label>
+        <input id="nombre" [(ngModel)]="nombre" name="nombre" required placeholder="Ej: Bandeja Paisa" />
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" [(ngModel)]="descripcion" name="descripcion" placeholder="Descripción del plato..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="precio">Precio</label>
+        <input id="precio" type="number" step="0.01" [(ngModel)]="precio" name="precio" required placeholder="0.00" />
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="disponible" name="disponible" />
+          <span>Disponible en el menú</span>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          {{ isEdit() ? 'Guardar cambios' : 'Crear producto' }}
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

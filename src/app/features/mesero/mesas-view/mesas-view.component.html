@@ -1,0 +1,33 @@
+<div class="mesas-page">
+  <div class="page-header">
+    <div>
+      <h2>Mesas del Restaurante</h2>
+      <p>Hola, <strong>{{ authService.user()?.nombre }}</strong> — selecciona una mesa libre para crear un pedido</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="loadMesas()">&#x21BB; Actualizar</button>
+      <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+    </div>
+  </div>
+
+  <div class="mesas-grid">
+    @for (mesa of mesas(); track mesa.id) {
+      <div class="mesa-card" [class.libre]="mesa.estado === 'LIBRE'" [class.ocupada]="mesa.estado === 'OCUPADA'">
+        <div class="mesa-numero">{{ mesa.numero }}</div>
+        <div class="mesa-info">
+          <span class="mesa-capacidad">{{ mesa.capacidad }} personas</span>
+          <span class="mesa-estado badge" [class.badge-success]="mesa.estado === 'LIBRE'" [class.badge-danger]="mesa.estado === 'OCUPADA'">
+            {{ mesa.estado }}
+          </span>
+        </div>
+        @if (mesa.estado === 'LIBRE') {
+          <button class="btn btn-primary btn-crear" (click)="crearPedido(mesa.id)">Crear Pedido</button>
+        }
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <p>No hay mesas registradas</p>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-with-back">
+      <a routerLink="/admin/dashboard" class="btn btn-back">&#8592; Inicio</a>
+      <div>
+        <h2>Usuarios</h2>
+        <p>Gestión de usuarios del sistema</p>
+      </div>
+    </div>
+    <a routerLink="/admin/usuarios/nuevo" class="btn btn-primary">+ Nuevo Usuario</a>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of usuarios(); track user.id) {
+          <tr>
+            <td>{{ user.id }}</td>
+            <td class="font-medium">{{ user.nombre }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+              <span class="badge" [class.badge-info]="user.rol === 'ADMIN'"
+                    [class.badge-success]="user.rol === 'MESERO'"
+                    [class.badge-warning]="user.rol === 'COCINA'">
+                {{ user.rol }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [class.badge-success]="user.activo" [class.badge-danger]="!user.activo">
+                {{ user.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/admin/usuarios/editar', user.id]" class="btn btn-sm btn-secondary">Editar</a>
+              <button class="btn btn-sm btn-danger" (click)="onDelete(user.id)">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-state">No hay usuarios registrados</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

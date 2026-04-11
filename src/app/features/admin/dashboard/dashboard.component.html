@@ -1,0 +1,35 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <div>
+      <h1>Panel de Administración</h1>
+      <p>Bienvenido, <strong>{{ authService.user()?.nombre }}</strong></p>
+    </div>
+    <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+  </div>
+
+  <div class="dashboard-grid">
+    <a routerLink="/admin/usuarios" class="dashboard-card">
+      <div class="card-icon">👥</div>
+      <h3>Usuarios</h3>
+      <p>Gestionar usuarios del sistema</p>
+    </a>
+
+    <a routerLink="/admin/productos" class="dashboard-card">
+      <div class="card-icon">🍽️</div>
+      <h3>Productos</h3>
+      <p>Administrar el menú del restaurante</p>
+    </a>
+
+    <a routerLink="/admin/mesas" class="dashboard-card">
+      <div class="card-icon">🪑</div>
+      <h3>Mesas</h3>
+      <p>Configurar las mesas del restaurante</p>
+    </a>
+
+    <a routerLink="/admin/pagos" class="dashboard-card">
+      <div class="card-icon">💰</div>
+      <h3>Pagos</h3>
+      <p>Historial de transacciones</p>
+    </a>
+  </div>
+</div>

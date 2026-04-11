@@ -1,0 +1,93 @@
+@if (pedido(); as p) {
+  <div class="pedido-detail-page">
+    <div class="page-header">
+      <div>
+        <h2>Pedido #{{ p.id }}</h2>
+        <p>Detalle completo del pedido</p>
+      </div>
+      <a routerLink="/mesero/pedidos" class="btn btn-secondary">← Volver a pedidos</a>
+    </div>
+
+    <!-- Info del pedido -->
+    <div class="info-cards">
+      <div class="info-card">
+        <span class="info-label">Mesa</span>
+        <span class="info-value">{{ p.mesa.numero }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Mesero</span>
+        <span class="info-value">{{ p.mesero.nombre }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Estado</span>
+        <span class="badge" [class.badge-warning]="p.estado === 'ABIERTO'" [class.badge-info]="p.estado === 'CERRADO'">
+          {{ p.estado }}
+        </span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Total</span>
+        <span class="info-value price">$ {{ p.total | number:'1.2-2' }}</span>
+      </div>
+    </div>
+
+    <!-- Detalles del pedido -->
+    <div class="section-card">
+      <h3>Detalles del Pedido</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unit.</th>
+            <th>Subtotal</th>
+            <th>Notas</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (d of p.detalles; track d.id) {
+            <tr>
+              <td class="font-medium">{{ d.producto.nombre }}</td>
+              <td>{{ d.cantidad }}</td>
+              <td>$ {{ d.precio_unitario | number:'1.2-2' }}</td>
+              <td class="price">$ {{ d.subtotal | number:'1.2-2' }}</td>
+              <td class="text-secondary">{{ d.descripcion ?? '-' }}</td>
+              <td>
+                <span class="badge"
+                  [class.badge-warning]="d.estado === 'PENDIENTE'"
+                  [class.badge-info]="d.estado === 'PREPARANDO'"
+                  [class.badge-success]="d.estado === 'LISTO'">
+                  {{ d.estado }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Acciones -->
+    <div class="actions-bar">
+      @if (p.estado === 'ABIERTO') {
+        <button class="btn btn-primary" (click)="cerrarPedido()">Cerrar Pedido</button>
+        <button class="btn btn-danger" (click)="eliminarPedido()">Eliminar Pedido</button>
+      }
+
+      @if (p.estado === 'CERRADO' && !p.pago) {
+        <button class="btn btn-success" (click)="registrarPago()">Cobrar Pedido</button>
+      }
+
+      @if (p.pago) {
+        <div class="pago-info">
+          <span class="badge badge-success">Pago Registrado</span>
+          <span>Total: <strong>$ {{ p.pago.total | number:'1.2-2' }}</strong></span>
+          <span class="text-secondary">{{ p.pago.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      }
+    </div>
+
+    @if (message()) {
+      <div class="alert alert-info">{{ message() }}</div>
+    }
+  </div>
+}

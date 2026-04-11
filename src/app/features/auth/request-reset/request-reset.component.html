@@ -1,0 +1,36 @@
+<div class="reset-page">
+  <div class="reset-card">
+    <div class="reset-header">
+      <div class="brand-icon">🍽️</div>
+      <h2>Recuperar Contraseña</h2>
+      <p>Ingresa tu correo y te enviaremos un enlace de recuperación</p>
+    </div>
+
+    @if (message()) {
+      <div class="alert alert-info">{{ message() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" class="reset-form">
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          placeholder="correo@ejemplo.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading()">
+        {{ loading() ? 'Enviando...' : 'Enviar enlace' }}
+      </button>
+
+      <div class="reset-footer">
+        <a routerLink="/login">← Volver al inicio de sesión</a>
+      </div>
+    </form>
+  </div>
+</div>

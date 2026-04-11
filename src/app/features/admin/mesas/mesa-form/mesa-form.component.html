@@ -1,0 +1,27 @@
+<div class="page-container">
+  <div class="page-header">
+    <div class="header-with-back">
+      <button class="btn btn-back" (click)="onCancel()">&#8592; Atrás</button>
+      <h2>Crear Mesa</h2>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <form (ngSubmit)="onSubmit()" class="form-layout">
+      <div class="form-group">
+        <label for="numero">Número de mesa</label>
+        <input id="numero" type="number" [(ngModel)]="numero" name="numero" required min="1" placeholder="Ej: 1" />
+      </div>
+
+      <div class="form-group">
+        <label for="capacidad">Capacidad (personas)</label>
+        <input id="capacidad" type="number" [(ngModel)]="capacidad" name="capacidad" required min="1" placeholder="Ej: 4" />
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Crear mesa</button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

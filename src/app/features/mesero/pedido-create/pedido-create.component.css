@@ -1,0 +1,102 @@
+.pedido-create-page {
+  padding: var(--spacing-xl);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.create-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.section-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+}
+
+.section-card h3 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-primary);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group select {
+  max-width: 350px;
+}
+
+.productos-table-container {
+  overflow-x: auto;
+}
+
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+
+.price {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.col-cantidad {
+  width: 80px;
+}
+
+.input-sm {
+  width: 70px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-align: center;
+}
+
+.input-notas {
+  min-width: 150px;
+}
+
+.carrito-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 2px solid var(--color-border-light);
+}
+
+.total {
+  font-size: var(--font-size-xl);
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.total strong {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+}
+
+.btn-enviar {
+  padding: var(--spacing-md) var(--spacing-2xl);
+  font-size: var(--font-size-base);
+}
+
+.empty-carrito {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--spacing-xl);
+  font-style: italic;
+}

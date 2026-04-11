@@ -1,0 +1,102 @@
+<div class="pedido-create-page">
+  <div class="page-header">
+    <h2>Crear Pedido</h2>
+  </div>
+
+  <div class="create-layout">
+    <!-- Selector de mesa -->
+    <div class="section-card">
+      <h3>1. Seleccionar Mesa</h3>
+      <div class="form-group">
+        <label for="mesa">Mesa</label>
+        <select id="mesa" [(ngModel)]="mesaSeleccionada" name="mesa">
+          <option [value]="0" disabled>-- Seleccionar mesa --</option>
+          @for (mesa of mesasLibres(); track mesa.id) {
+            <option [value]="mesa.id">Mesa {{ mesa.numero }} (Cap. {{ mesa.capacidad }})</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Productos disponibles -->
+    <div class="section-card">
+      <h3>2. Agregar Productos</h3>
+      <div class="productos-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Notas</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (prod of productosDisponibles(); track prod.id) {
+              <tr>
+                <td class="font-medium">{{ prod.nombre }}</td>
+                <td class="price">$ {{ prod.precio | number:'1.2-2' }}</td>
+                <td class="col-cantidad">
+                  <input type="number" min="1" [(ngModel)]="cantidades[prod.id]" [name]="'cant_' + prod.id" class="input-sm" />
+                </td>
+                <td>
+                  <input type="text" [(ngModel)]="descripciones[prod.id]" [name]="'desc_' + prod.id" placeholder="Sin cebolla..." class="input-notas" />
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-primary" (click)="agregarItem(prod)">+ Agregar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Carrito -->
+    <div class="section-card carrito">
+      <h3>3. Resumen del Pedido ({{ carrito().length }} items)</h3>
+      @if (carrito().length > 0) {
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Notas</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of carrito(); track item.producto.id) {
+              <tr>
+                <td class="font-medium">{{ item.producto.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td class="text-secondary">{{ item.descripcion || '-' }}</td>
+                <td class="price">$ {{ item.producto.precio * item.cantidad | number:'1.2-2' }}</td>
+                <td>
+                  <button class="btn btn-sm btn-danger" (click)="removeItem(item.producto.id)">Quitar</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="carrito-footer">
+          <div class="total">
+            <span>Total estimado:</span>
+            <strong>$ {{ totalEstimado() | number:'1.2-2' }}</strong>
+          </div>
+          <button class="btn btn-success btn-enviar" (click)="enviarPedido()">Enviar Pedido</button>
+        </div>
+      } @else {
+        <div class="empty-carrito">
+          <p>No hay productos en el pedido. Agrega productos de la lista anterior.</p>
+        </div>
+      }
+    </div>
+
+    @if (errorMessage()) {
+      <div class="alert alert-error">{{ errorMessage() }}</div>
+    }
+  </div>
+</div>
