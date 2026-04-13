@@ -28,6 +28,10 @@ export class MesasViewComponent implements OnInit {
     this.router.navigate(['/mesero/pedidos/nuevo'], { queryParams: { mesa: mesaId } });
   }
 
+  verPedidos(): void {
+    this.router.navigate(['/mesero/pedidos']);
+  }
+
   onLogout(): void {
     this.authService.logout();
   }

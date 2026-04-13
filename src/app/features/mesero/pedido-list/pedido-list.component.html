@@ -4,7 +4,30 @@
       <h2>Mis Pedidos</h2>
       <p>Historial de pedidos realizados</p>
     </div>
-    <a routerLink="/mesero/pedidos/nuevo" class="btn btn-primary">+ Nuevo Pedido</a>
+    <div class="header-actions">
+      <a routerLink="/mesero/mesas" class="btn btn-secondary">&#x2190; Volver a Mesas</a>
+      <a routerLink="/mesero/pedidos/nuevo" class="btn btn-primary">+ Nuevo Pedido</a>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="number"
+      class="search-input"
+      placeholder="Buscar por ID de pedido..."
+      min="1"
+      [(ngModel)]="busquedaId"
+      (keydown.enter)="buscarPorId()"
+    />
+    <button class="btn btn-primary" [disabled]="buscando()" (click)="buscarPorId()">
+      {{ buscando() ? 'Buscando...' : '&#x1F50D; Buscar' }}
+    </button>
+    @if (busquedaId()) {
+      <button class="btn btn-secondary" (click)="limpiarBusqueda()">&#x2715; Limpiar</button>
+    }
+    @if (errorBusqueda()) {
+      <span class="search-error">{{ errorBusqueda() }}</span>
+    }
   </div>
 
   <div class="table-container">
@@ -35,8 +58,32 @@
                 {{ pedido.pago ? 'Pagado' : 'Pendiente' }}
               </span>
             </td>
-            <td>
+            <td class="acciones-cell">
               <a [routerLink]="['/mesero/pedidos', pedido.id]" class="btn btn-sm btn-secondary">Ver detalle</a>
+              @if (pedido.estado === 'ABIERTO') {
+                <button
+                  class="btn btn-sm btn-warning"
+                  [disabled]="esProcesando('cerrar-' + pedido.id)"
+                  (click)="cerrarPedido(pedido.id)">
+                  {{ esProcesando('cerrar-' + pedido.id) ? 'Cerrando...' : 'Cerrar Pedido' }}
+                </button>
+              }
+              @if (pedido.estado === 'CERRADO' && !pedido.pago) {
+                <button
+                  class="btn btn-sm btn-success"
+                  [disabled]="esProcesando('pago-' + pedido.id)"
+                  (click)="generarPago(pedido.id)">
+                  {{ esProcesando('pago-' + pedido.id) ? 'Procesando...' : 'Generar Pago' }}
+                </button>
+              }
+              @if (pedido.estado === 'ABIERTO' && !pedido.pago) {
+                <button
+                  class="btn btn-sm btn-danger"
+                  [disabled]="esProcesando('eliminar-' + pedido.id)"
+                  (click)="eliminarPedido(pedido.id)">
+                  {{ esProcesando('eliminar-' + pedido.id) ? 'Eliminando...' : 'Eliminar' }}
+                </button>
+              }
             </td>
           </tr>
         } @empty {

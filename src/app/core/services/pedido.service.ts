@@ -16,9 +16,9 @@ export class PedidoService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/pedidos`;
 
-  getAll(): Observable<PedidoResponse[]> {
+ getAll(): Observable<PedidoResponse[]> {
     return this.http.get<PedidoResponse[]>(`${this.apiUrl}/`);
-  }
+  } 
 
   getById(id: number): Observable<PedidoResponse> {
     return this.http.get<PedidoResponse>(`${this.apiUrl}/${id}`);
