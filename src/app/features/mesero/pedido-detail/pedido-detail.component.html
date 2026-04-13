@@ -16,7 +16,11 @@
       </div>
       <div class="info-card">
         <span class="info-label">Mesero</span>
-        <span class="info-value">{{ p.mesero.nombre }}</span>
+        <span class="info-value">{{ p.usuario.nombre }}</span>
+      </div>
+      <div class="info-card">
+        <span class="info-label">Fecha</span>
+        <span class="info-value" style="font-size: var(--font-size-sm)">{{ p.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
       </div>
       <div class="info-card">
         <span class="info-label">Estado</span>
@@ -26,7 +30,11 @@
       </div>
       <div class="info-card">
         <span class="info-label">Total</span>
-        <span class="info-value price">$ {{ p.total | number:'1.2-2' }}</span>
+        @if (p.pago) {
+          <span class="info-value price">$ {{ p.pago.total | number:'1.2-2' }}</span>
+        } @else {
+          <span class="text-secondary">Pendiente</span>
+        }
       </div>
     </div>
 

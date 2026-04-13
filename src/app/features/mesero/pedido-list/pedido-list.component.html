@@ -52,7 +52,7 @@
                 {{ pedido.estado }}
               </span>
             </td>
-            <td class="price">$ {{ pedido.total | number:'1.2-2' }}</td>
+            <td class="price">{{ pedido.pago ? ('$ ' + (pedido.pago.total | number:'1.2-2')) : '-' }}</td>
             <td>
               <span class="badge" [class.badge-success]="pedido.pago" [class.badge-neutral]="!pedido.pago">
                 {{ pedido.pago ? 'Pagado' : 'Pendiente' }}

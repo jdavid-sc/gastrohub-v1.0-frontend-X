@@ -51,10 +51,11 @@ export interface MesaSimple {
 export interface DetallePedidoResponse {
   id: number;
   pedido_id: number;
+  producto_id: number;
   producto: ProductoSimple;
   cantidad: number;
-  precio_unitario: number;
-  subtotal: number;
+  precio_unitario: string;
+  subtotal: string;
   descripcion: string | null;
   estado: DetallePedidoEstado;
 }
@@ -62,18 +63,18 @@ export interface DetallePedidoResponse {
 export interface PagoResponse {
   id: number;
   pedido_id: number;
-  total: number;
+  total: string;
   fecha: string;
 }
 
 export interface PedidoResponse {
   id: number;
-  mesa: MesaSimple;
-  mesero: UsuarioSimple;
+  fecha: string;
   estado: PedidoEstado;
-  fecha_creacion: string;
-  fecha_actualizacion: string;
-  total: number;
+  mesa_id: number;
+  usuario_id: number;
+  mesa: MesaSimple;
+  usuario: UsuarioSimple;
   detalles: DetallePedidoResponse[];
   pago: PagoResponse | null;
 }
