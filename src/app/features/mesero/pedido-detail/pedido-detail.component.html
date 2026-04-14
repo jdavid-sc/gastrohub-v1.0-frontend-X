@@ -50,6 +50,9 @@
             <th>Subtotal</th>
             <th>Notas</th>
             <th>Estado</th>
+            @if (p.estado === 'ABIERTO') {
+              <th>Acciones</th>
+            }
           </tr>
         </thead>
         <tbody>
@@ -68,6 +71,22 @@
                   {{ d.estado }}
                 </span>
               </td>
+              @if (p.estado === 'ABIERTO') {
+                <td class="acciones-cell">
+                  <button
+                    class="btn btn-warning btn-sm"
+                    title="Editar cantidad"
+                    (click)="abrirModalEditar(d.id, d.producto.nombre, d.cantidad)">
+                    ✏️
+                  </button>
+                  <button
+                    class="btn btn-danger btn-sm"
+                    title="Eliminar producto"
+                    (click)="eliminarDetalle(d.id)">
+                    🗑️
+                  </button>
+                </td>
+              }
             </tr>
           }
         </tbody>
@@ -78,6 +97,7 @@
     <div class="actions-bar">
       @if (p.estado === 'ABIERTO') {
         <button class="btn btn-primary" (click)="cerrarPedido()">Cerrar Pedido</button>
+        <button class="btn btn-warning" (click)="abrirModalModificar()">Agregar Producto</button>
         <button class="btn btn-danger" (click)="eliminarPedido()">Eliminar Pedido</button>
       }
 
@@ -97,5 +117,88 @@
     @if (message()) {
       <div class="alert alert-info">{{ message() }}</div>
     }
+  </div>
+}
+
+<!-- Modal editar cantidad de detalle -->
+@if (mostrarModalEditar()) {
+  <div class="modal-overlay" (click)="cerrarModalEditar()">
+    <div class="modal-container modal-sm" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar Cantidad</h3>
+        <button class="btn-close" (click)="cerrarModalEditar()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-secondary">Producto: <strong>{{ detalleEditando()?.nombre }}</strong></p>
+        <label class="form-label">Nueva cantidad</label>
+        <input
+          type="number"
+          min="1"
+          class="form-input"
+          [value]="cantidadEditar()"
+          (input)="cantidadEditar.set(+$any($event.target).value)" />
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarModalEditar()">Cancelar</button>
+        <button class="btn btn-primary" (click)="confirmarEditar()" [disabled]="loadingEditar()">
+          {{ loadingEditar() ? 'Guardando...' : 'Guardar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Modal modificar pedido -->
+@if (mostrarModal()) {
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Modificar Pedido</h3>
+        <button class="btn-close" (click)="cerrarModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-secondary">Selecciona los productos a agregar al pedido.</p>
+
+        @if (productos().length === 0) {
+          <p class="text-secondary">Cargando productos...</p>
+        } @else {
+          @for (item of itemsNuevos(); track $index; let i = $index) {
+            <div class="item-row">
+              <select
+                class="form-select"
+                [value]="item.producto_id"
+                (change)="updateItem(i, 'producto_id', +$any($event.target).value)">
+                @for (prod of productos(); track prod.id) {
+                  <option [value]="prod.id">{{ prod.nombre }} — ${{ prod.precio | number:'1.2-2' }}</option>
+                }
+              </select>
+
+              <input
+                type="number"
+                min="1"
+                class="form-input input-qty"
+                [value]="item.cantidad"
+                (input)="updateItem(i, 'cantidad', +$any($event.target).value)" />
+
+              @if (itemsNuevos().length > 1) {
+                <button class="btn btn-danger btn-sm" (click)="removerFila(i)">✕</button>
+              }
+            </div>
+          }
+
+          <button class="btn btn-secondary btn-sm mt-sm" (click)="agregarFila()">+ Agregar otro producto</button>
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" (click)="confirmarModificar()" [disabled]="loadingModal()">
+          {{ loadingModal() ? 'Guardando...' : 'Confirmar' }}
+        </button>
+      </div>
+    </div>
   </div>
 }
