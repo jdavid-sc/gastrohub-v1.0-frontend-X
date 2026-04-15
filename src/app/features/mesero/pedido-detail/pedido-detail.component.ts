@@ -1,6 +1,7 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DecimalPipe, DatePipe } from '@angular/common';
+import Swal from 'sweetalert2';
 import { PedidoService } from '../../../core/services/pedido.service';
 import { PedidoResponse } from '../../../core/models/pedido.model';
 import { ProductoService } from '../../../core/services/producto.service';
@@ -71,9 +72,22 @@ export class PedidoDetailComponent implements OnInit {
   eliminarPedido(): void {
     const p = this.pedido();
     if (!p) return;
-    this.pedidoService.delete(p.id).subscribe({
-      next: () => this.router.navigate(['/mesero/pedidos']),
-      error: (err) => this.message.set(err.error?.detail ?? 'Error al eliminar.')
+    Swal.fire({
+      title: '¿Eliminar pedido?',
+      text: `¿Estás seguro de que deseas eliminar el Pedido #${p.id}? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e53e3e',
+      cancelButtonColor: '#718096',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.pedidoService.delete(p.id).subscribe({
+          next: () => this.router.navigate(['/mesero/pedidos']),
+          error: (err) => this.message.set(err.error?.detail ?? 'Error al eliminar.')
+        });
+      }
     });
   }
 

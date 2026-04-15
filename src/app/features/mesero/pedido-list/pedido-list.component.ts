@@ -1,7 +1,8 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 import { PedidoService } from '../../../core/services/pedido.service';
 import { PedidoResponse } from '../../../core/models/pedido.model';
 
@@ -18,6 +19,23 @@ export class PedidoListComponent implements OnInit {
   busquedaId = signal<string>('');
   buscando = signal<boolean>(false);
   errorBusqueda = signal<string | null>(null);
+
+  readonly pageSize = 10;
+  paginaActual = signal(1);
+
+  pedidosOrdenados = computed(() => [
+    ...this.pedidos().filter(p => p.estado === 'ABIERTO'),
+    ...this.pedidos().filter(p => p.estado !== 'ABIERTO'),
+  ]);
+
+  totalPaginas = computed(() => Math.max(1, Math.ceil(this.pedidosOrdenados().length / this.pageSize)));
+
+  pedidosPaginados = computed(() => {
+    const inicio = (this.paginaActual() - 1) * this.pageSize;
+    return this.pedidosOrdenados().slice(inicio, inicio + this.pageSize);
+  });
+
+  paginas = computed(() => Array.from({ length: this.totalPaginas() }, (_, i) => i + 1));
 
   ngOnInit(): void {
     this.loadPedidos();
@@ -38,6 +56,7 @@ export class PedidoListComponent implements OnInit {
     this.pedidoService.getById(id).subscribe({
       next: (pedido) => {
         this.pedidos.set([pedido]);
+        this.paginaActual.set(1);
         this.buscando.set(false);
       },
       error: (err) => {
@@ -51,6 +70,7 @@ export class PedidoListComponent implements OnInit {
   limpiarBusqueda(): void {
     this.busquedaId.set('');
     this.errorBusqueda.set(null);
+    this.paginaActual.set(1);
     this.loadPedidos();
   }
 
@@ -92,20 +112,36 @@ export class PedidoListComponent implements OnInit {
     });
   }
 
+  cambiarPagina(pagina: number): void {
+    if (pagina < 1 || pagina > this.totalPaginas()) return;
+    this.paginaActual.set(pagina);
+  }
+
   eliminarPedido(id: number): void {
-    if (!confirm(`¿Estás seguro de que deseas eliminar el pedido #${id}? Esta acción no se puede deshacer.`)) return;
-    const key = `eliminar-${id}`;
-    if (this.procesando().has(key)) return;
-    this.procesando.update(s => new Set(s).add(key));
-    this.pedidoService.delete(id).subscribe({
-      next: () => {
-        this.pedidos.update(lista => lista.filter(p => p.id !== id));
-        this.procesando.update(s => { const n = new Set(s); n.delete(key); return n; });
-      },
-      error: (err) => {
-        alert(err?.error?.detail ?? 'Error al eliminar el pedido');
-        this.procesando.update(s => { const n = new Set(s); n.delete(key); return n; });
-      }
+    Swal.fire({
+      title: '¿Eliminar pedido?',
+      text: `¿Estás seguro de que deseas eliminar el Pedido #${id}? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e53e3e',
+      cancelButtonColor: '#718096',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      const key = `eliminar-${id}`;
+      if (this.procesando().has(key)) return;
+      this.procesando.update(s => new Set(s).add(key));
+      this.pedidoService.delete(id).subscribe({
+        next: () => {
+          this.pedidos.update(lista => lista.filter(p => p.id !== id));
+          this.procesando.update(s => { const n = new Set(s); n.delete(key); return n; });
+        },
+        error: (err) => {
+          alert(err?.error?.detail ?? 'Error al eliminar el pedido');
+          this.procesando.update(s => { const n = new Set(s); n.delete(key); return n; });
+        }
+      });
     });
   }
 }

@@ -65,3 +65,24 @@
   padding: var(--spacing-2xl) !important;
   font-style: italic;
 }
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.pagination-info {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}

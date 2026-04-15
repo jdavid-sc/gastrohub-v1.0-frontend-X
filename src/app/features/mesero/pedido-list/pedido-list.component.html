@@ -43,7 +43,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (pedido of pedidos(); track pedido.id) {
+        @for (pedido of pedidosPaginados(); track pedido.id) {
           <tr>
             <td>#{{ pedido.id }}</td>
             <td class="font-medium">Mesa {{ pedido.mesa.numero }}</td>
@@ -94,4 +94,36 @@
       </tbody>
     </table>
   </div>
+
+  <!-- Paginación -->
+  @if (totalPaginas() > 1) {
+    <div class="pagination-container">
+      <div class="pagination-info">
+        Página {{ paginaActual() }} de {{ totalPaginas() }} — {{ pedidosOrdenados().length }} pedidos en total
+      </div>
+      <div class="pagination-controls">
+        <button
+          class="btn btn-sm btn-secondary"
+          [disabled]="paginaActual() === 1"
+          (click)="cambiarPagina(paginaActual() - 1)">
+          ← Anterior
+        </button>
+        @for (p of paginas(); track p) {
+          <button
+            class="btn btn-sm"
+            [class.btn-primary]="paginaActual() === p"
+            [class.btn-secondary]="paginaActual() !== p"
+            (click)="cambiarPagina(p)">
+            {{ p }}
+          </button>
+        }
+        <button
+          class="btn btn-sm btn-secondary"
+          [disabled]="paginaActual() === totalPaginas()"
+          (click)="cambiarPagina(paginaActual() + 1)">
+          Siguiente →
+        </button>
+      </div>
+    </div>
+  }
 </div>

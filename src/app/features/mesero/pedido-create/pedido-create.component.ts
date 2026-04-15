@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
@@ -30,6 +30,12 @@ export class PedidoCreateComponent implements OnInit {
 
   mesasLibres = signal<Mesa[]>([]);
   productosDisponibles = signal<Producto[]>([]);
+  filtroNombre = signal('');
+  productosFiltrados = computed(() =>
+    this.productosDisponibles().filter(p =>
+      p.nombre.toLowerCase().includes(this.filtroNombre().toLowerCase())
+    )
+  );
   carrito = signal<ItemCarrito[]>([]);
   errorMessage = signal('');
   mesaSeleccionada = 0;
