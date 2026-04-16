@@ -24,6 +24,10 @@ interface ItemCarrito {
 export class PedidoCreateComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+
+  cancelar(): void {
+    this.router.navigate(['/mesero/mesas']);
+  }
   private mesaService = inject(MesaService);
   private productoService = inject(ProductoService);
   private pedidoService = inject(PedidoService);

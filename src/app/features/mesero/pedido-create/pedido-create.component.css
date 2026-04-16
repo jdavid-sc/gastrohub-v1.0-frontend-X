@@ -5,7 +5,9 @@
 }
 
 .page-header {
-  margin-bottom: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .create-layout {
