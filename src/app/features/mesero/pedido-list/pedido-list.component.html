@@ -60,22 +60,6 @@
             </td>
             <td class="acciones-cell">
               <a [routerLink]="['/mesero/pedidos', pedido.id]" class="btn btn-sm btn-secondary">Ver detalle</a>
-              @if (pedido.estado === 'ABIERTO') {
-                <button
-                  class="btn btn-sm btn-warning"
-                  [disabled]="esProcesando('cerrar-' + pedido.id)"
-                  (click)="cerrarPedido(pedido.id)">
-                  {{ esProcesando('cerrar-' + pedido.id) ? 'Cerrando...' : 'Cerrar Pedido' }}
-                </button>
-              }
-              @if (pedido.estado === 'CERRADO' && !pedido.pago) {
-                <button
-                  class="btn btn-sm btn-success"
-                  [disabled]="esProcesando('pago-' + pedido.id)"
-                  (click)="generarPago(pedido.id)">
-                  {{ esProcesando('pago-' + pedido.id) ? 'Procesando...' : 'Generar Pago' }}
-                </button>
-              }
               @if (pedido.estado === 'ABIERTO' && !pedido.pago) {
                 <button
                   class="btn btn-sm btn-danger"

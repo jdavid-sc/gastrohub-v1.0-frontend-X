@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { PedidoService } from '../../../core/services/pedido.service';
 import { PedidoResponse } from '../../../core/models/pedido.model';
+import { DetallePedidoEstado } from '../../../core/models/enums';
 
 @Component({
   selector: 'app-pedido-list',
@@ -118,6 +119,22 @@ export class PedidoListComponent implements OnInit {
   }
 
   eliminarPedido(id: number): void {
+    const pedido = this.pedidos().find(p => p.id === id);
+    const tieneEnProceso = pedido?.detalles.some(
+      d => d.estado === DetallePedidoEstado.PREPARANDO || d.estado === DetallePedidoEstado.LISTO
+    );
+
+    if (tieneEnProceso) {
+      Swal.fire({
+        title: 'No se puede eliminar',
+        text: 'Este pedido tiene productos en preparación o ya finalizados. No es posible eliminarlo.',
+        icon: 'error',
+        confirmButtonColor: '#e53e3e',
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }
+
     Swal.fire({
       title: '¿Eliminar pedido?',
       text: `¿Estás seguro de que deseas eliminar el Pedido #${id}? Esta acción no se puede deshacer.`,
