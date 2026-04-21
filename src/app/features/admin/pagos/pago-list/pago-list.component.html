@@ -4,6 +4,26 @@
       <h2>Historial de Pagos</h2>
       <p>Registro de transacciones realizadas</p>
     </div>
+    <a routerLink="/admin/dashboard" class="btn btn-secondary">&#8592; Inicio</a>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="number"
+      class="search-input"
+      placeholder="Buscar por ID de pago..."
+      min="1"
+      [(ngModel)]="busquedaId"
+      (keydown.enter)="buscarPorId()" />
+    <button class="btn btn-primary" [disabled]="buscando()" (click)="buscarPorId()">
+      {{ buscando() ? 'Buscando...' : '&#x1F50D; Buscar' }}
+    </button>
+    @if (busquedaId()) {
+      <button class="btn btn-secondary" (click)="limpiarBusqueda()">&#x2715; Limpiar</button>
+    }
+    @if (errorBusqueda()) {
+      <span class="search-error">{{ errorBusqueda() }}</span>
+    }
   </div>
 
   <div class="table-container">
@@ -17,7 +37,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (pago of pagos(); track pago.id) {
+        @for (pago of pagosPaginados(); track pago.id) {
           <tr>
             <td>{{ pago.id }}</td>
             <td>Pedido #{{ pago.pedido_id }}</td>
@@ -32,4 +52,19 @@
       </tbody>
     </table>
   </div>
+
+  @if (totalPaginas() > 1) {
+    <div class="pagination-container">
+      <div class="pagination-info">
+        Página {{ paginaActual() }} de {{ totalPaginas() }} — {{ pagosOrdenados().length }} pagos en total
+      </div>
+      <div class="pagination-controls">
+        <button class="btn btn-sm btn-secondary" [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)">← Anterior</button>
+        @for (p of paginas(); track p) {
+          <button class="btn btn-sm" [class.btn-primary]="paginaActual() === p" [class.btn-secondary]="paginaActual() !== p" (click)="cambiarPagina(p)">{{ p }}</button>
+        }
+        <button class="btn btn-sm btn-secondary" [disabled]="paginaActual() === totalPaginas()" (click)="cambiarPagina(paginaActual() + 1)">Siguiente →</button>
+      </div>
+    </div>
+  }
 </div>

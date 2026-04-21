@@ -1,13 +1,32 @@
 <div class="page-container">
   <div class="page-header">
-    <div class="header-with-back">
-      <a routerLink="/admin/dashboard" class="btn btn-back">&#8592; Inicio</a>
-      <div>
-        <h2>Mesas</h2>
-        <p>Configuración de mesas del restaurante</p>
-      </div>
+    <div>
+      <h2>Mesas</h2>
+      <p>Configuración de mesas del restaurante</p>
     </div>
-    <a routerLink="/admin/mesas/nueva" class="btn btn-primary">+ Nueva Mesa</a>
+    <div class="header-actions">
+      <a routerLink="/admin/dashboard" class="btn btn-secondary">&#8592; Inicio</a>
+      <a routerLink="/admin/mesas/nueva" class="btn btn-primary">+ Nueva Mesa</a>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="number"
+      class="search-input"
+      placeholder="Buscar por ID de mesa..."
+      min="1"
+      [(ngModel)]="busquedaId"
+      (keydown.enter)="buscarPorId()" />
+    <button class="btn btn-primary" [disabled]="buscando()" (click)="buscarPorId()">
+      {{ buscando() ? 'Buscando...' : '&#x1F50D; Buscar' }}
+    </button>
+    @if (busquedaId()) {
+      <button class="btn btn-secondary" (click)="limpiarBusqueda()">&#x2715; Limpiar</button>
+    }
+    @if (errorBusqueda()) {
+      <span class="search-error">{{ errorBusqueda() }}</span>
+    }
   </div>
 
   <div class="table-container">
@@ -22,7 +41,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (mesa of mesas(); track mesa.id) {
+        @for (mesa of mesasPaginadas(); track mesa.id) {
           <tr>
             <td>{{ mesa.id }}</td>
             <td class="font-medium">Mesa {{ mesa.numero }}</td>
@@ -44,4 +63,19 @@
       </tbody>
     </table>
   </div>
+
+  @if (totalPaginas() > 1) {
+    <div class="pagination-container">
+      <div class="pagination-info">
+        Página {{ paginaActual() }} de {{ totalPaginas() }} — {{ mesas().length }} mesas en total
+      </div>
+      <div class="pagination-controls">
+        <button class="btn btn-sm btn-secondary" [disabled]="paginaActual() === 1" (click)="cambiarPagina(paginaActual() - 1)">← Anterior</button>
+        @for (p of paginas(); track p) {
+          <button class="btn btn-sm" [class.btn-primary]="paginaActual() === p" [class.btn-secondary]="paginaActual() !== p" (click)="cambiarPagina(p)">{{ p }}</button>
+        }
+        <button class="btn btn-sm btn-secondary" [disabled]="paginaActual() === totalPaginas()" (click)="cambiarPagina(paginaActual() + 1)">Siguiente →</button>
+      </div>
+    </div>
+  }
 </div>

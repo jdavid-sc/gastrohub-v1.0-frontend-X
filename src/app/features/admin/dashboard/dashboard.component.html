@@ -4,7 +4,9 @@
       <h1>Panel de Administración</h1>
       <p>Bienvenido, <strong>{{ authService.user()?.nombre }}</strong></p>
     </div>
-    <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+    <div class="header-actions">
+      <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+    </div>
   </div>
 
   <div class="dashboard-grid">
