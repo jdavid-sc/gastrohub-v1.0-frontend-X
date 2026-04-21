@@ -10,18 +10,32 @@
     </div>
   </div>
 
-  @if (detalles().length === 0) {
+  <div class="filtro-bar">
+    <input
+      type="number"
+      min="1"
+      class="form-input"
+      placeholder="Buscar por ID de pedido..."
+      [value]="filtroPedidoId()"
+      (input)="filtroPedidoId.set($any($event.target).value)" />
+    @if (filtroPedidoId()) {
+      <button class="btn btn-secondary" (click)="filtroPedidoId.set('')">✕ Limpiar</button>
+    }
+  </div>
+
+  @if (detallesFiltrados().length === 0) {
     <div class="empty-state">
       <div class="empty-icon">✅</div>
-      <p>No hay platos pendientes por preparar</p>
+      <p>{{ filtroPedidoId() ? 'No se encontraron platos para el Pedido #' + filtroPedidoId() : 'No hay platos pendientes por preparar' }}</p>
     </div>
   }
 
   <div class="detalles-grid">
-    @for (d of detalles(); track d.id) {
+    @for (d of detallesFiltrados(); track d.id) {
       <div class="detalle-card" [class.pendiente]="d.estado === 'PENDIENTE'" [class.preparando]="d.estado === 'PREPARANDO'">
         <div class="card-header">
           <span class="pedido-badge">Pedido #{{ d.pedido_id }}</span>
+          <span class="mesa-badge">Mesa {{ d.numero_mesa ?? 'Sin mesa' }}</span>
           <span class="badge" [class.badge-warning]="d.estado === 'PENDIENTE'" [class.badge-info]="d.estado === 'PREPARANDO'">
             {{ d.estado }}
           </span>

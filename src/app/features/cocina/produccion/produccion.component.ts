@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { DetallePedidoService } from '../../../core/services/detalle-pedido.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { DetallePedidoResponse } from '../../../core/models/pedido.model';
@@ -13,6 +13,15 @@ export class ProduccionComponent implements OnInit {
   private detalleService = inject(DetallePedidoService);
   authService = inject(AuthService);
   detalles = signal<DetallePedidoResponse[]>([]);
+  filtroPedidoId = signal<string>('');
+
+  detallesFiltrados = computed(() => {
+    const filtro = this.filtroPedidoId().trim();
+    if (!filtro) return this.detalles();
+    const id = parseInt(filtro, 10);
+    if (isNaN(id)) return this.detalles();
+    return this.detalles().filter(d => d.pedido_id === id);
+  });
 
   ngOnInit(): void {
     this.loadDetalles();

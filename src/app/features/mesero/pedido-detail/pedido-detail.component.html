@@ -96,7 +96,7 @@
     <!-- Acciones -->
     <div class="actions-bar">
       @if (p.estado === 'ABIERTO') {
-        <button class="btn btn-primary" (click)="cerrarPedido()">Cerrar Pedido</button>
+        <button class="btn btn-primary" (click)="finalizarPedido()">Finalizar Pedido</button>
         <button class="btn btn-warning" (click)="abrirModalModificar()">Agregar Producto</button>
         <button class="btn btn-danger" (click)="eliminarPedido()">Eliminar Pedido</button>
       }

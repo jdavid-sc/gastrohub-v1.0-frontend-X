@@ -13,6 +13,10 @@ export class DetallePedidoService {
     return this.http.get<DetallePedidoResponse[]>(`${this.apiUrl}/`);
   }
 
+  getByPedido(pedidoId: number): Observable<DetallePedidoResponse[]> {
+    return this.http.get<DetallePedidoResponse[]>(`${this.apiUrl}/pedido/${pedidoId}`);
+  }
+
   getById(id: number): Observable<DetallePedidoResponse> {
     return this.http.get<DetallePedidoResponse>(`${this.apiUrl}/${id}`);
   }

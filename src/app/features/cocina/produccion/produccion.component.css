@@ -17,6 +17,17 @@
   margin-top: var(--spacing-xs);
 }
 
+.filtro-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.filtro-bar .form-input {
+  width: 220px;
+}
+
 .empty-state {
   text-align: center;
   padding: var(--spacing-2xl);
@@ -55,7 +66,8 @@
 .card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
   margin-bottom: var(--spacing-md);
 }
 
@@ -65,6 +77,22 @@
   color: var(--color-text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.mesa-badge {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-surface);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: auto;
+}
+
+.mesa-badge + .badge {
+  margin-left: 0;
 }
 
 .producto-nombre {

@@ -51,6 +51,7 @@ export interface MesaSimple {
 export interface DetallePedidoResponse {
   id: number;
   pedido_id: number;
+  numero_mesa: number | null;
   producto_id: number;
   producto: ProductoSimple;
   cantidad: number;

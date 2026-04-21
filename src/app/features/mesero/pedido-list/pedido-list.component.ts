@@ -24,10 +24,14 @@ export class PedidoListComponent implements OnInit {
   readonly pageSize = 10;
   paginaActual = signal(1);
 
-  pedidosOrdenados = computed(() => [
-    ...this.pedidos().filter(p => p.estado === 'ABIERTO'),
-    ...this.pedidos().filter(p => p.estado !== 'ABIERTO'),
-  ]);
+  pedidosOrdenados = computed(() => {
+    const porFecha = (a: PedidoResponse, b: PedidoResponse) =>
+      new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
+    return [
+      ...this.pedidos().filter(p => p.estado === 'ABIERTO').sort(porFecha),
+      ...this.pedidos().filter(p => p.estado !== 'ABIERTO').sort(porFecha),
+    ];
+  });
 
   totalPaginas = computed(() => Math.max(1, Math.ceil(this.pedidosOrdenados().length / this.pageSize)));
 

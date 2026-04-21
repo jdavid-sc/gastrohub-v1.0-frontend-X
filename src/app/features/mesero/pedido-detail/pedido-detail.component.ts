@@ -57,6 +57,38 @@ export class PedidoDetailComponent implements OnInit {
     });
   }
 
+  finalizarPedido(): void {
+    const p = this.pedido();
+    if (!p) return;
+    Swal.fire({
+      title: '¿Finalizar pedido?',
+      text: `¿Estás seguro de que deseas cerrar y registrar el pago del Pedido #${p.id}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3182ce',
+      cancelButtonColor: '#718096',
+      confirmButtonText: 'Sí, finalizar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+      this.pedidoService.cerrar(p.id).subscribe({
+        next: () => {
+          this.pedidoService.registrarPago(p.id).subscribe({
+            next: () => {
+              this.loadPedido();
+              this.message.set('Pedido finalizado y pago registrado exitosamente.');
+            },
+            error: (err) => {
+              this.loadPedido();
+              this.message.set(err.error?.detail ?? 'Pedido cerrado, pero ocurrió un error al registrar el pago.');
+            }
+          });
+        },
+        error: (err) => this.message.set(err.error?.detail ?? 'Error al cerrar el pedido.')
+      });
+    });
+  }
+
   registrarPago(): void {
     const p = this.pedido();
     if (!p) return;
