@@ -97,8 +97,20 @@
 }
 
 .empty-state {
-  text-align: center;
+  text-align: center;  
   color: var(--color-text-muted);
   padding: var(--spacing-2xl) !important;
   font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: var(--spacing-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
 }

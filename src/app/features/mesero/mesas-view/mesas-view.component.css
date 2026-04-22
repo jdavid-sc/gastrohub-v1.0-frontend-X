@@ -78,3 +78,30 @@
   padding: var(--spacing-2xl);
   font-style: italic;
 }
+
+@media (max-width: 768px) {
+  .mesas-page {
+    padding: var(--spacing-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .page-header > div:last-child {
+    align-self: flex-start;
+  }
+
+  .mesas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .mesas-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

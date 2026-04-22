@@ -371,3 +371,102 @@ select {
 .badge-warning { background: #fef3c7; color: #92400e; }
 .badge-info    { background: #dbeafe; color: #1e40af; }
 .badge-neutral { background: #f3f4f6; color: #4b5563; }
+
+/* ========== RESPONSIVE — GLOBAL ========== */
+
+/* Viewport meta hint for all pages */
+html {
+  overflow-x: hidden;
+}
+
+/* Tables always scrollable horizontally */
+.table-container {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  /* Reduce base spacing */
+  :root {
+    --spacing-xl: 1.25rem;
+    --spacing-2xl: 2rem;
+  }
+
+  /* Typography */
+  h1 { font-size: var(--font-size-2xl); }
+  h2 { font-size: var(--font-size-xl); }
+
+  /* Page headers stack vertically */
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .page-header .header-actions,
+  .page-header > a,
+  .page-header > button {
+    align-self: flex-start;
+  }
+
+  /* Header actions wrap */
+  .header-actions {
+    flex-wrap: wrap;
+  }
+
+  /* Search bars: inputs fill width */
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    width: 100% !important;
+  }
+
+  /* Table cells reduce padding */
+  thead th,
+  tbody td {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  /* Buttons in action columns wrap */
+  .actions {
+    flex-wrap: wrap;
+  }
+
+  /* Pagination stacks */
+  .pagination-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --spacing-xl: 1rem;
+    --spacing-2xl: 1.5rem;
+  }
+
+  /* Full-width buttons on very small screens */
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Except buttons inside pagination or header-actions */
+  .pagination-controls .btn-primary,
+  .pagination-controls .btn-secondary,
+  .header-actions .btn-primary,
+  .header-actions .btn-secondary,
+  .header-actions .btn-danger,
+  .actions .btn-primary,
+  .actions .btn-secondary,
+  .actions .btn-danger,
+  .filter-actions .btn-primary,
+  .filter-actions .btn-secondary {
+    width: auto;
+  }
+}

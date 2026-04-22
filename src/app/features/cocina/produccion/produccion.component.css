@@ -143,3 +143,33 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
 }
+
+@media (max-width: 768px) {
+  .produccion-page {
+    padding: var(--spacing-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .filtro-bar {
+    flex-wrap: wrap;
+  }
+
+  .filtro-bar .form-input {
+    width: 100%;
+  }
+
+  .detalles-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .detalles-grid {
+    grid-template-columns: 1fr;
+  }
+}

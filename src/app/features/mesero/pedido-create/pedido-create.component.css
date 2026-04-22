@@ -161,3 +161,39 @@
   padding: var(--spacing-xl);
   font-style: italic;
 }
+
+@media (max-width: 768px) {
+  .pedido-create-page {
+    padding: var(--spacing-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .form-group select {
+    max-width: 100%;
+  }
+
+  .filter-input-wrapper {
+    max-width: 100%;
+  }
+
+  .carrito-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-md);
+  }
+
+  .btn-enviar {
+    width: 100%;
+    padding: var(--spacing-md);
+  }
+
+  .input-notas {
+    min-width: 80px;
+  }
+}

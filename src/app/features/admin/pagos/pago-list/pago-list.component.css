@@ -149,6 +149,46 @@
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+  .top-section {
+    flex-direction: column;
+  }
+
+  .ventas-card {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  .ventas-card-label {
+    text-align: left;
+    white-space: normal;
+  }
+
+  .ventas-card-amount {
+    font-size: var(--font-size-2xl);
+  }
+
+  .filter-fields {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .ventas-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 .table-container {
   background: var(--color-surface);
   border-radius: var(--radius-lg);

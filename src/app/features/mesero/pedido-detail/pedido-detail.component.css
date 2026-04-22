@@ -150,6 +150,49 @@
   padding: 0 var(--spacing-xs);
 }
 
+@media (max-width: 768px) {
+  .pedido-detail-page {
+    padding: var(--spacing-md);
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+
+  .actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions-bar .btn-primary,
+  .actions-bar .btn-secondary,
+  .actions-bar .btn-danger,
+  .actions-bar .btn-warning {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pago-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .modal-container {
+    max-width: 100%;
+    margin: var(--spacing-md);
+    max-height: 95vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .btn-close:hover {
   color: var(--color-text);
 }
