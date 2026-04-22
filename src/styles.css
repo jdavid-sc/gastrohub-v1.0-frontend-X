@@ -343,6 +343,10 @@ select {
   border: 1px solid #fde68a;
 }
 
+.alert-icon {
+  margin-right: 6px;
+}
+
 /* --- Utility: Cards --- */
 .card {
   background: var(--color-surface);

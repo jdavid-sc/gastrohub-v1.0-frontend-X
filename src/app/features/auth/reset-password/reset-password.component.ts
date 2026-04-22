@@ -28,6 +28,10 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.newPassword.length < 8) {
+      this.errorMessage.set('La contraseña debe tener mínimo 8 caracteres.');
+      return;
+    }
     this.loading.set(true);
     this.errorMessage.set('');
 

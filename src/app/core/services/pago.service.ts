@@ -16,4 +16,10 @@ export class PagoService {
   getById(id: number): Observable<PagoResponse> {
     return this.http.get<PagoResponse>(`${this.apiUrl}/${id}`);
   }
+
+  filtrarPorFecha(fechaInicio: string, fechaFin: string): Observable<PagoResponse[]> {
+    return this.http.get<PagoResponse[]>(`${this.apiUrl}/filtrar`, {
+      params: { fecha_inicio: fechaInicio, fecha_fin: fechaFin }
+    });
+  }
 }

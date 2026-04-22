@@ -5,9 +5,16 @@
       <p>Hola, <strong>{{ authService.user()?.nombre }}</strong> — selecciona una mesa libre para crear un pedido</p>
     </div>
     <div class="header-actions">
-      <button class="btn btn-secondary" (click)="loadMesas()">&#x21BB; Actualizar</button>
+      @if (authService.userRole() === 'ADMIN') {
+        <button class="btn btn-secondary" (click)="irAlDashboard()">&#x2190; Regresar al Dashboard</button>
+      }
+      @if (authService.userRole() !== 'ADMIN') {
+        <button class="btn btn-secondary" (click)="loadMesas()">&#x21BB; Actualizar</button>
+      }
       <button class="btn btn-primary" (click)="verPedidos()">&#x1F4CB; Mis Pedidos</button>
-      <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+      @if (authService.userRole() !== 'ADMIN') {
+        <button class="btn btn-danger" (click)="onLogout()">&#x2190; Cerrar Sesión</button>
+      }
     </div>
   </div>
 

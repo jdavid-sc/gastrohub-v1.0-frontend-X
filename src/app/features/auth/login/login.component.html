@@ -7,7 +7,14 @@
     </div>
 
     @if (errorMessage()) {
-      <div class="alert alert-error">{{ errorMessage() }}</div>
+      @if (errorType() === 'inactive') {
+        <div class="alert alert-warning">
+          <span class="alert-icon">⚠️</span>
+          {{ errorMessage() }}
+        </div>
+      } @else {
+        <div class="alert alert-error">{{ errorMessage() }}</div>
+      }
     }
 
     <form (ngSubmit)="onLogin()" class="login-form">

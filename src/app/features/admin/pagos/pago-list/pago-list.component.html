@@ -7,23 +7,70 @@
     <a routerLink="/admin/dashboard" class="btn btn-secondary">&#8592; Inicio</a>
   </div>
 
-  <div class="search-bar">
-    <input
-      type="number"
-      class="search-input"
-      placeholder="Buscar por ID de pago..."
-      min="1"
-      [(ngModel)]="busquedaId"
-      (keydown.enter)="buscarPorId()" />
-    <button class="btn btn-primary" [disabled]="buscando()" (click)="buscarPorId()">
-      {{ buscando() ? 'Buscando...' : '&#x1F50D; Buscar' }}
-    </button>
-    @if (busquedaId()) {
-      <button class="btn btn-secondary" (click)="limpiarBusqueda()">&#x2715; Limpiar</button>
-    }
-    @if (errorBusqueda()) {
-      <span class="search-error">{{ errorBusqueda() }}</span>
-    }
+  <div class="top-section">
+    <div class="controls-column">
+      <div class="search-bar">
+        <input
+          type="number"
+          class="search-input"
+          placeholder="Buscar por ID de pago..."
+          min="1"
+          [(ngModel)]="busquedaId"
+          (keydown.enter)="buscarPorId()" />
+        <button class="btn btn-primary" [disabled]="buscando()" (click)="buscarPorId()">
+          {{ buscando() ? 'Buscando...' : '&#x1F50D; Buscar' }}
+        </button>
+        @if (busquedaId()) {
+          <button class="btn btn-secondary" (click)="limpiarBusqueda()">&#x2715; Limpiar</button>
+        }
+        @if (errorBusqueda()) {
+          <span class="search-error">{{ errorBusqueda() }}</span>
+        }
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-fields">
+          <div class="filter-field">
+            <label for="fechaInicio">Fecha inicio</label>
+            <input
+              id="fechaInicio"
+              type="date"
+              class="search-input"
+              [(ngModel)]="fechaInicio"
+            />
+          </div>
+          <div class="filter-field">
+            <label for="fechaFin">Fecha fin</label>
+            <input
+              id="fechaFin"
+              type="date"
+              class="search-input"
+              [(ngModel)]="fechaFin"
+            />
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-primary" [disabled]="filtrando()" (click)="filtrarFecha()">
+              {{ filtrando() ? 'Filtrando...' : '&#x1F4C5; Buscar' }}
+            </button>
+            @if (filtroActivo()) {
+              <button class="btn btn-secondary" (click)="limpiarFiltro()">&#x2715; Limpiar filtro</button>
+            }
+          </div>
+        </div>
+        @if (errorFiltro()) {
+          <span class="search-error">{{ errorFiltro() }}</span>
+        }
+        @if (filtrando()) {
+          <span class="filter-loading">Cargando resultados...</span>
+        }
+      </div>
+    </div>
+
+    <div class="ventas-card">
+      <div class="ventas-card-label">{{ filtroActivo() ? 'Total del período' : 'Total ventas hoy' }}</div>
+      <div class="ventas-card-amount">$ {{ totalVentasDia() | number:'1.2-2' }}</div>
+      <div class="ventas-card-count">{{ conteoVentasDia() }} transacci{{ conteoVentasDia() === 1 ? 'ón' : 'ones' }}</div>
+    </div>
   </div>
 
   <div class="table-container">

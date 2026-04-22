@@ -21,18 +21,13 @@ export class LoginComponent {
   password = '';
   loading = signal(false);
   errorMessage = signal('');
+  errorType = signal<'generic' | 'inactive'>('generic');
 
   async onLogin(): Promise<void> {
     if (this.loading()) return; // prevenir doble envío
     this.loading.set(true);
     this.errorMessage.set('');
-
-    const startTime = Date.now();
-
-    const ensureMinDelay = async () => {
-      const elapsed = Date.now() - startTime;
-      if (elapsed < 1000) await new Promise(r => setTimeout(r, 1000 - elapsed));
-    };
+    this.errorType.set('generic');
 
     let recaptchaToken: string;
     try {
@@ -40,7 +35,6 @@ export class LoginComponent {
       console.log('[Login] ✅ reCAPTCHA token obtenido');
     } catch (err) {
       console.error('[Login] ❌ Error obteniendo token reCAPTCHA:', err);
-      await ensureMinDelay();
       this.errorMessage.set('No se pudo verificar reCAPTCHA. Recarga la página e intenta de nuevo.');
       this.loading.set(false);
       return;
@@ -62,14 +56,15 @@ export class LoginComponent {
       await firstValueFrom(this.authService.fetchCurrentUser());
       console.log('[Login] ✅ Perfil cargado. Rol:', this.authService.userRole());
 
-      await ensureMinDelay();
       this.redirectByRole();
     } catch (err: any) {
       console.error('[Login] ❌ Error en el flujo de login:', err);
       console.error('[Login] Status:', err?.status, '| URL:', err?.url);
-      await ensureMinDelay();
       if (err?.status === 401) {
         this.errorMessage.set('Credenciales inválidas.');
+      } else if (err?.status === 403) {
+        this.errorType.set('inactive');
+        this.errorMessage.set(err?.error?.detail ?? 'El usuario no se encuentra habilitado para ingresar a la plataforma.');
       } else if (err?.status === 422) {
         this.errorMessage.set('Token reCAPTCHA inválido. Recarga la página.');
       } else if (err?.status === 429) {

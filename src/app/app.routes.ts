@@ -70,7 +70,7 @@ export const routes: Routes = [
   // --- MESERO ---
   {
     path: 'mesero',
-    canActivate: [authGuard, roleGuard([UserRole.MESERO])],
+    canActivate: [authGuard, roleGuard([UserRole.MESERO, UserRole.ADMIN])],
     children: [
       {
         path: 'mesas',

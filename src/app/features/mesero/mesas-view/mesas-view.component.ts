@@ -32,6 +32,10 @@ export class MesasViewComponent implements OnInit {
     this.router.navigate(['/mesero/pedidos']);
   }
 
+  irAlDashboard(): void {
+    this.router.navigate(['/admin/dashboard']);
+  }
+
   onLogout(): void {
     this.authService.logout();
   }
