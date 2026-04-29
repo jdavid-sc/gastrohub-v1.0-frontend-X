@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manual Técnico Frontend — GastroHub</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:#0f1117;
+      color:#e2e8f0;
+      font-size:14px;
+      line-height:1.75;
+    }
+
+    /* ── LAYOUT ── */
+    .layout{display:flex;min-height:100vh;}
+
+    /* ── SIDEBAR ── */
+    nav.sidebar{
+      width:260px;
+      min-width:260px;
+      background:#161b27;
+      border-right:1px solid #1e2a3a;
+      padding:32px 0;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow-y:auto;
+    }
+    .sidebar .brand{
+      padding:0 24px 28px;
+      font-size:18px;
+      font-weight:700;
+      color:#63b3ed;
+      border-bottom:1px solid #1e2a3a;
+      margin-bottom:20px;
+    }
+    .sidebar .brand span{color:#90cdf4;}
+    .sidebar ul{list-style:none;padding:0 12px;}
+    .sidebar ul li{margin-bottom:2px;}
+    .sidebar ul li a{
+      display:block;
+      padding:7px 14px;
+      border-radius:6px;
+      color:#a0aec0;
+      text-decoration:none;
+      font-size:13px;
+      transition:background .15s,color .15s;
+    }
+    .sidebar ul li a:hover{background:#1e2a3a;color:#e2e8f0;}
+    .sidebar ul li.section-label{
+      padding:14px 14px 4px;
+      font-size:11px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      color:#4a5568;
+    }
+
+    /* ── MAIN ── */
+    main{
+      flex:1;
+      padding:48px 60px;
+      max-width:900px;
+    }
+
+    /* ── COVER ── */
+    .cover{
+      background:linear-gradient(135deg,#1a2a4a 0%,#1e3a5f 50%,#2b527a 100%);
+      border-radius:12px;
+      padding:60px 48px;
+      margin-bottom:56px;
+      border:1px solid #2d4a6b;
+    }
+    .cover .tag{
+      font-size:11px;
+      font-weight:600;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:#63b3ed;
+      margin-bottom:14px;
+    }
+    .cover h1{
+      font-size:36px;
+      font-weight:700;
+      color:#fff;
+      line-height:1.2;
+      margin-bottom:12px;
+    }
+    .cover h1 span{color:#63b3ed;}
+    .cover p{color:#90cdf4;font-size:15px;margin-bottom:28px;}
+    .cover .meta-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    .meta-card{
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px;
+      padding:14px 18px;
+    }
+    .meta-card .label{font-size:11px;color:#63b3ed;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+    .meta-card .value{font-size:14px;font-weight:600;color:#e2e8f0;}
+
+    /* ── SECCIONES ── */
+    section{margin-bottom:52px;}
+
+    h2{
+      font-size:24px;
+      font-weight:700;
+      color:#e2e8f0;
+      border-bottom:1px solid #1e2a3a;
+      padding-bottom:10px;
+      margin-bottom:24px;
+    }
+    h3{
+      font-size:16px;
+      font-weight:600;
+      color:#90cdf4;
+      margin:28px 0 12px;
+    }
+    h4{
+      font-size:14px;
+      font-weight:600;
+      color:#63b3ed;
+      margin:18px 0 8px;
+    }
+    p{color:#a0aec0;margin-bottom:12px;}
+    ul,ol{padding-left:22px;margin-bottom:14px;color:#a0aec0;}
+    li{margin-bottom:5px;}
+    strong{color:#e2e8f0;}
+
+    /* ── CÓDIGO ── */
+    code{
+      font-family:'JetBrains Mono',monospace;
+      font-size:12.5px;
+      background:#1a2235;
+      color:#68d391;
+      padding:2px 7px;
+      border-radius:4px;
+      border:1px solid #2d3748;
+    }
+    pre{
+      background:#0d1117;
+      border:1px solid #1e2a3a;
+      border-radius:8px;
+      padding:20px 24px;
+      overflow-x:auto;
+      margin:14px 0 20px;
+    }
+    pre code{
+      background:none;
+      border:none;
+      padding:0;
+      color:#a8d8a8;
+      font-size:13px;
+      line-height:1.7;
+    }
+    .kw{color:#c792ea;}
+    .fn{color:#82aaff;}
+    .str{color:#c3e88d;}
+    .cm{color:#546e7a;font-style:italic;}
+    .ty{color:#ffcb6b;}
+
+    /* ── TABLAS ── */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:14px 0 22px;
+      font-size:13px;
+    }
+    th{
+      background:#1a2a3a;
+      color:#63b3ed;
+      text-align:left;
+      padding:10px 14px;
+      font-weight:600;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+    }
+    td{
+      padding:9px 14px;
+      border-bottom:1px solid #1a2235;
+      color:#a0aec0;
+      vertical-align:top;
+    }
+    tr:hover td{background:#111827;}
+    td code{font-size:12px;}
+
+    /* ── CALLOUTS ── */
+    .callout{
+      border-radius:8px;
+      padding:14px 18px;
+      margin:14px 0 18px;
+      font-size:13.5px;
+      display:flex;
+      gap:12px;
+    }
+    .callout.info{background:#1a2a3a;border-left:3px solid #3182ce;color:#90cdf4;}
+    .callout.warn{background:#2d2008;border-left:3px solid #d69e2e;color:#fbd38d;}
+    .callout.tip {background:#0f2a1a;border-left:3px solid #38a169;color:#9ae6b4;}
+    .callout-icon{font-size:16px;min-width:20px;}
+
+    /* ── ÁRBOL DE ARCHIVOS ── */
+    .tree{
+      background:#0d1117;
+      border:1px solid #1e2a3a;
+      border-radius:8px;
+      padding:20px 24px;
+      font-family:'JetBrains Mono',monospace;
+      font-size:12.5px;
+      line-height:2;
+      color:#a0aec0;
+      margin:14px 0 20px;
+    }
+    .tree .dir{color:#63b3ed;font-weight:600;}
+    .tree .file{color:#9ae6b4;}
+    .tree .comment{color:#4a5568;}
+
+    /* ── BADGE ── */
+    .badge{
+      display:inline-block;
+      padding:2px 10px;
+      border-radius:99px;
+      font-size:11.5px;
+      font-weight:600;
+    }
+    .badge.get   {background:#1a3a1a;color:#68d391;border:1px solid #276749;}
+    .badge.post  {background:#2a2000;color:#f6e05e;border:1px solid #975a16;}
+    .badge.patch {background:#1a2a3a;color:#63b3ed;border:1px solid #2b6cb0;}
+    .badge.put   {background:#2d1b69;color:#b794f4;border:1px solid #553c9a;}
+    .badge.del   {background:#3a1a1a;color:#fc8181;border:1px solid #c53030;}
+
+    /* ── ENDPOINT ── */
+    .endpoint{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:#111827;
+      border:1px solid #1e2a3a;
+      border-radius:6px;
+      padding:10px 16px;
+      margin:8px 0;
+      font-family:'JetBrains Mono',monospace;
+      font-size:13px;
+      color:#e2e8f0;
+    }
+
+    /* ── FLUJO ── */
+    .flow-box{
+      background:#111827;
+      border:1px solid #1e2a3a;
+      border-radius:10px;
+      padding:24px;
+    }
+    .flow-step{
+      display:flex;
+      gap:16px;
+      margin-bottom:20px;
+      align-items:flex-start;
+    }
+    .flow-step:last-child{margin-bottom:0;}
+    .flow-num{
+      min-width:28px;height:28px;
+      border-radius:50%;
+      background:#2b6cb0;
+      color:#fff;
+      font-weight:700;
+      font-size:13px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .flow-body strong{display:block;color:#e2e8f0;margin-bottom:3px;}
+    .flow-body span{color:#718096;font-size:13px;}
+    .flow-arrow{color:#2b6cb0;font-size:18px;margin-left:13px;margin-top:-10px;}
+
+    /* ── PRINT ── */
+    @media print{
+      body{background:#fff;color:#1a202c;}
+      .sidebar{display:none;}
+      main{padding:20px;max-width:100%;}
+      .cover{background:#1a365d!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      pre,code,.tree,.endpoint,.callout{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      h2,h3,h4{color:#1a202c;}
+      p,li,td{color:#2d3748;}
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="brand">Gastro<span>Hub</span><br/><small style="font-size:11px;font-weight:400;color:#4a5568;">Manual Técnico Frontend</small></div>
+    <ul>
+      <li class="section-label">Introducción</li>
+      <li><a href="#overview">Visión general</a></li>
+      <li><a href="#stack">Stack tecnológico</a></li>
+      <li><a href="#estructura">Estructura del proyecto</a></li>
+
+      <li class="section-label">Arquitectura</li>
+      <li><a href="#config">Configuración de la app</a></li>
+      <li><a href="#routing">Enrutamiento</a></li>
+      <li><a href="#guards">Guards de acceso</a></li>
+      <li><a href="#interceptors">Interceptores HTTP</a></li>
+
+      <li class="section-label">Capa de datos</li>
+      <li><a href="#models">Modelos e interfaces</a></li>
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#api">Mapa de endpoints</a></li>
+
+      <li class="section-label">Componentes</li>
+      <li><a href="#auth-comp">Autenticación</a></li>
+      <li><a href="#admin-comp">Módulo Admin</a></li>
+      <li><a href="#mesero-comp">Módulo Mesero</a></li>
+      <li><a href="#cocina-comp">Módulo Cocina</a></li>
+
+      <li class="section-label">Seguridad</li>
+      <li><a href="#security">Seguridad</a></li>
+      <li><a href="#env">Variables de entorno</a></li>
+      <li><a href="#build">Build y despliegue</a></li>
+    </ul>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- PORTADA -->
+    <div class="cover">
+      <div class="tag">Documentación técnica</div>
+      <h1>GastroHub <span>Frontend</span></h1>
+      <p>Manual técnico de la aplicación Angular — arquitectura, servicios, guards, interceptores y componentes.</p>
+      <div class="meta-grid">
+        <div class="meta-card">
+          <div class="label">Framework</div>
+          <div class="value">Angular 21</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Lenguaje</div>
+          <div class="value">TypeScript 5.9</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Versión</div>
+          <div class="value">v1.0 — Abril 2026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. VISIÓN GENERAL -->
+    <section id="overview">
+      <h2>1. Visión general</h2>
+      <p>GastroHub Frontend es una <strong>Single Page Application (SPA)</strong> con soporte de <strong>Server-Side Rendering (SSR)</strong> construida con Angular 21. Se comunica con una API REST backend vía HTTP y gestiona la sesión del usuario mediante <strong>JWT (JSON Web Tokens)</strong>.</p>
+      <p>La aplicación implementa un sistema de roles estricto con tres perfiles de usuario: <code>ADMIN</code>, <code>MESERO</code> y <code>COCINA</code>, cada uno con rutas y funcionalidades propias protegidas por guards.</p>
+    </section>
+
+    <!-- 2. STACK -->
+    <section id="stack">
+      <h2>2. Stack tecnológico</h2>
+      <table>
+        <thead><tr><th>Tecnología</th><th>Versión</th><th>Propósito</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Angular</strong></td><td>^21.2.0</td><td>Framework principal (componentes, routing, DI, signals)</td></tr>
+          <tr><td><strong>TypeScript</strong></td><td>~5.9.2</td><td>Tipado estático, modo strict habilitado</td></tr>
+          <tr><td><strong>RxJS</strong></td><td>~7.8.0</td><td>Programación reactiva y manejo de HTTP</td></tr>
+          <tr><td><strong>Angular SSR</strong></td><td>^21.2.2</td><td>Server-Side Rendering con Express 5</td></tr>
+          <tr><td><strong>SweetAlert2</strong></td><td>^11.26.24</td><td>Modales de confirmación y alertas</td></tr>
+          <tr><td><strong>jwt-decode</strong></td><td>^4.0.0</td><td>Decodificación de JWT en cliente</td></tr>
+          <tr><td><strong>Express</strong></td><td>^5.1.0</td><td>Servidor Node.js para SSR</td></tr>
+          <tr><td><strong>Vitest</strong></td><td>^4.0.8</td><td>Framework de pruebas unitarias</td></tr>
+          <tr><td><strong>Google reCAPTCHA v3</strong></td><td>—</td><td>Protección anti-bot en el login</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. ESTRUCTURA -->
+    <section id="estructura">
+      <h2>3. Estructura del proyecto</h2>
+      <div class="tree">
+<span class="dir">src/</span><br/>
+├── <span class="dir">app/</span><br/>
+│   ├── <span class="file">app.ts</span>                  <span class="comment">// Componente raíz</span><br/>
+│   ├── <span class="file">app.config.ts</span>           <span class="comment">// Configuración global (providers)</span><br/>
+│   ├── <span class="file">app.routes.ts</span>           <span class="comment">// Definición de todas las rutas</span><br/>
+│   ├── <span class="dir">core/</span>                   <span class="comment">// Lógica transversal y compartida</span><br/>
+│   │   ├── <span class="dir">guards/</span>             <span class="comment">// Protección de rutas</span><br/>
+│   │   │   ├── <span class="file">auth.guard.ts</span>   <span class="comment">// Verifica token válido</span><br/>
+│   │   │   └── <span class="file">role.guard.ts</span>   <span class="comment">// Verifica rol autorizado</span><br/>
+│   │   ├── <span class="dir">interceptors/</span>       <span class="comment">// Middleware HTTP</span><br/>
+│   │   │   ├── <span class="file">auth.interceptor.ts</span>  <span class="comment">// Adjunta Bearer token</span><br/>
+│   │   │   └── <span class="file">error.interceptor.ts</span> <span class="comment">// Maneja errores globales</span><br/>
+│   │   ├── <span class="dir">models/</span>             <span class="comment">// Interfaces TypeScript</span><br/>
+│   │   │   ├── <span class="file">auth.model.ts</span><br/>
+│   │   │   ├── <span class="file">enums.ts</span>        <span class="comment">// UserRole, MesaEstado, PedidoEstado, DetallePedidoEstado</span><br/>
+│   │   │   ├── <span class="file">mesa.model.ts</span><br/>
+│   │   │   ├── <span class="file">pedido.model.ts</span><br/>
+│   │   │   ├── <span class="file">producto.model.ts</span><br/>
+│   │   │   └── <span class="file">usuario.model.ts</span><br/>
+│   │   └── <span class="dir">services/</span>           <span class="comment">// Servicios inyectables</span><br/>
+│   │       ├── <span class="file">auth.service.ts</span><br/>
+│   │       ├── <span class="file">detalle-pedido.service.ts</span><br/>
+│   │       ├── <span class="file">mesa.service.ts</span><br/>
+│   │       ├── <span class="file">pago.service.ts</span><br/>
+│   │       ├── <span class="file">pedido.service.ts</span><br/>
+│   │       ├── <span class="file">producto.service.ts</span><br/>
+│   │       ├── <span class="file">recaptcha.service.ts</span><br/>
+│   │       └── <span class="file">usuario.service.ts</span><br/>
+│   └── <span class="dir">features/</span>               <span class="comment">// Módulos funcionales por rol</span><br/>
+│       ├── <span class="dir">auth/</span>               <span class="comment">// Login, recuperación de contraseña</span><br/>
+│       ├── <span class="dir">admin/</span>              <span class="comment">// Dashboard, usuarios, productos, mesas, pagos</span><br/>
+│       ├── <span class="dir">mesero/</span>             <span class="comment">// Mesas, pedidos (create/list/detail)</span><br/>
+│       └── <span class="dir">cocina/</span>             <span class="comment">// Vista de producción</span><br/>
+├── <span class="dir">environments/</span><br/>
+│   ├── <span class="file">environment.ts</span>          <span class="comment">// Desarrollo (apiUrl: localhost:3000)</span><br/>
+│   └── <span class="file">environment.prod.ts</span>     <span class="comment">// Producción (apiUrl: localhost:8000)</span><br/>
+└── <span class="file">main.ts</span>                     <span class="comment">// Bootstrap del cliente</span><br/>
+      </div>
+    </section>
+
+    <!-- 4. CONFIGURACIÓN -->
+    <section id="config">
+      <h2>4. Configuración de la aplicación</h2>
+      <p>El archivo <code>app.config.ts</code> registra todos los providers globales usando la API funcional de Angular:</p>
+      <pre><code><span class="kw">export const</span> <span class="fn">appConfig</span>: <span class="ty">ApplicationConfig</span> = {
+  providers: [
+    <span class="fn">provideBrowserGlobalErrorListeners</span>(),   <span class="cm">// Manejo global de errores JS</span>
+    <span class="fn">provideRouter</span>(routes),                   <span class="cm">// Enrutamiento basado en routes[]</span>
+    <span class="fn">provideHttpClient</span>(
+      <span class="fn">withFetch</span>(),                             <span class="cm">// Usa fetch API (compatible SSR)</span>
+      <span class="fn">withInterceptors</span>([authInterceptor, errorInterceptor])
+    ),
+    <span class="fn">provideClientHydration</span>(<span class="fn">withEventReplay</span>()) <span class="cm">// Hidratación SSR + replay de eventos</span>
+  ]
+};</code></pre>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <span>Los interceptores se registran en orden: primero <strong>authInterceptor</strong> adjunta el token, luego <strong>errorInterceptor</strong> procesa la respuesta.</span>
+      </div>
+    </section>
+
+    <!-- 5. ROUTING -->
+    <section id="routing">
+      <h2>5. Enrutamiento</h2>
+      <p>Todas las rutas están definidas en <code>app.routes.ts</code> usando <strong>lazy loading</strong> con <code>loadComponent</code> para cada vista. Las rutas privadas se protegen con <code>canActivate</code>.</p>
+      <table>
+        <thead><tr><th>Ruta base</th><th>Guard</th><th>Roles permitidos</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>/login</code></td><td>—</td><td>Público</td><td>Inicio de sesión</td></tr>
+          <tr><td><code>/request-reset</code></td><td>—</td><td>Público</td><td>Solicitar reset de contraseña</td></tr>
+          <tr><td><code>/reset-password</code></td><td>—</td><td>Público</td><td>Establecer nueva contraseña</td></tr>
+          <tr><td><code>/admin/*</code></td><td>authGuard + roleGuard</td><td>ADMIN</td><td>Panel de administración</td></tr>
+          <tr><td><code>/mesero/*</code></td><td>authGuard + roleGuard</td><td>MESERO, ADMIN</td><td>Gestión de mesas y pedidos</td></tr>
+          <tr><td><code>/cocina/*</code></td><td>authGuard + roleGuard</td><td>COCINA</td><td>Vista de producción</td></tr>
+          <tr><td><code>**</code></td><td>—</td><td>—</td><td>Redirige a /login</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Rutas hijas del módulo Admin</h3>
+      <table>
+        <thead><tr><th>Ruta</th><th>Componente</th></tr></thead>
+        <tbody>
+          <tr><td><code>/admin/dashboard</code></td><td>DashboardComponent</td></tr>
+          <tr><td><code>/admin/usuarios</code></td><td>UsuarioListComponent</td></tr>
+          <tr><td><code>/admin/usuarios/nuevo</code></td><td>UsuarioFormComponent</td></tr>
+          <tr><td><code>/admin/usuarios/editar/:id</code></td><td>UsuarioFormComponent</td></tr>
+          <tr><td><code>/admin/productos</code></td><td>ProductoListComponent</td></tr>
+          <tr><td><code>/admin/productos/nuevo</code></td><td>ProductoFormComponent</td></tr>
+          <tr><td><code>/admin/productos/editar/:id</code></td><td>ProductoFormComponent</td></tr>
+          <tr><td><code>/admin/mesas</code></td><td>MesaListComponent</td></tr>
+          <tr><td><code>/admin/mesas/nueva</code></td><td>MesaFormComponent</td></tr>
+          <tr><td><code>/admin/pagos</code></td><td>PagoListComponent</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Rutas hijas del módulo Mesero</h3>
+      <table>
+        <thead><tr><th>Ruta</th><th>Componente</th></tr></thead>
+        <tbody>
+          <tr><td><code>/mesero/mesas</code></td><td>MesasViewComponent</td></tr>
+          <tr><td><code>/mesero/pedidos</code></td><td>PedidoListComponent</td></tr>
+          <tr><td><code>/mesero/pedidos/nuevo</code></td><td>PedidoCreateComponent</td></tr>
+          <tr><td><code>/mesero/pedidos/:id</code></td><td>PedidoDetailComponent</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 6. GUARDS -->
+    <section id="guards">
+      <h2>6. Guards de acceso</h2>
+
+      <h3>authGuard</h3>
+      <p>Verifica que exista un token JWT válido y no expirado. Si no, redirige a <code>/login</code>.</p>
+      <pre><code><span class="kw">export const</span> <span class="fn">authGuard</span>: <span class="ty">CanActivateFn</span> = () => {
+  <span class="kw">const</span> authService = <span class="fn">inject</span>(AuthService);
+  <span class="kw">const</span> router = <span class="fn">inject</span>(Router);
+
+  <span class="kw">if</span> (authService.<span class="fn">getToken</span>() &amp;&amp; !authService.<span class="fn">isTokenExpired</span>()) {
+    <span class="kw">return</span> <span class="str">true</span>;
+  }
+  router.<span class="fn">navigate</span>([<span class="str">'/login'</span>]);
+  <span class="kw">return</span> <span class="str">false</span>;
+};</code></pre>
+
+      <h3>roleGuard</h3>
+      <p>Fábrica de guard que recibe la lista de roles permitidos. Consulta el rol actual del usuario desde <code>AuthService.userRole()</code> (signal reactivo).</p>
+      <pre><code><span class="kw">export const</span> <span class="fn">roleGuard</span> = (allowedRoles: <span class="ty">UserRole</span>[]): <span class="ty">CanActivateFn</span> => {
+  <span class="kw">return</span> () => {
+    <span class="kw">const</span> role = <span class="fn">inject</span>(AuthService).<span class="fn">userRole</span>();
+    <span class="kw">if</span> (role &amp;&amp; allowedRoles.<span class="fn">includes</span>(role)) <span class="kw">return</span> <span class="str">true</span>;
+    <span class="fn">inject</span>(Router).<span class="fn">navigate</span>([<span class="str">'/login'</span>]);
+    <span class="kw">return</span> <span class="str">false</span>;
+  };
+};</code></pre>
+      <div class="callout tip">
+        <span class="callout-icon">✓</span>
+        <span>Las rutas siempre aplican ambos guards en cadena: <code>canActivate: [authGuard, roleGuard([...])]</code>. El <code>authGuard</code> se evalúa primero.</span>
+      </div>
+    </section>
+
+    <!-- 7. INTERCEPTORES -->
+    <section id="interceptors">
+      <h2>7. Interceptores HTTP</h2>
+
+      <h3>authInterceptor</h3>
+      <p>Clona cada petición saliente y adjunta el header <code>Authorization: Bearer &lt;token&gt;</code> si existe un token en sesión.</p>
+      <pre><code><span class="kw">export const</span> <span class="fn">authInterceptor</span>: <span class="ty">HttpInterceptorFn</span> = (req, next) => {
+  <span class="kw">const</span> token = <span class="fn">inject</span>(AuthService).<span class="fn">getToken</span>();
+  <span class="kw">if</span> (token) {
+    <span class="kw">const</span> cloned = req.<span class="fn">clone</span>({ setHeaders: { Authorization: <span class="str">`Bearer ${token}`</span> } });
+    <span class="kw">return</span> <span class="fn">next</span>(cloned);
+  }
+  <span class="kw">return</span> <span class="fn">next</span>(req);
+};</code></pre>
+
+      <h3>errorInterceptor</h3>
+      <p>Captura errores HTTP globalmente y ejecuta acciones según el código de estado:</p>
+      <table>
+        <thead><tr><th>Código</th><th>Acción</th></tr></thead>
+        <tbody>
+          <tr><td><code>401</code></td><td>Limpia <code>localStorage</code> y redirige a <code>/login</code> (excepto si la petición era el propio login)</td></tr>
+          <tr><td><code>403</code></td><td>Solo loguea una advertencia; cada componente maneja su propio 403</td></tr>
+          <tr><td><code>429</code></td><td>Loguea advertencia de rate limit</td></tr>
+          <tr><td><code>500</code></td><td>Loguea error interno del servidor</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 8. MODELOS -->
+    <section id="models">
+      <h2>8. Modelos e interfaces TypeScript</h2>
+
+      <h3>Enumeraciones (<code>enums.ts</code>)</h3>
+      <pre><code><span class="kw">export enum</span> <span class="ty">UserRole</span>          { ADMIN = <span class="str">'ADMIN'</span>, MESERO = <span class="str">'MESERO'</span>, COCINA = <span class="str">'COCINA'</span> }
+<span class="kw">export enum</span> <span class="ty">MesaEstado</span>         { LIBRE = <span class="str">'LIBRE'</span>, OCUPADA = <span class="str">'OCUPADA'</span> }
+<span class="kw">export enum</span> <span class="ty">PedidoEstado</span>       { ABIERTO = <span class="str">'ABIERTO'</span>, CERRADO = <span class="str">'CERRADO'</span> }
+<span class="kw">export enum</span> <span class="ty">DetallePedidoEstado</span> { PENDIENTE = <span class="str">'PENDIENTE'</span>, PREPARANDO = <span class="str">'PREPARANDO'</span>, LISTO = <span class="str">'LISTO'</span> }</code></pre>
+
+      <h3>Interfaces principales</h3>
+      <table>
+        <thead><tr><th>Interface</th><th>Archivo</th><th>Campos clave</th></tr></thead>
+        <tbody>
+          <tr><td><code>Usuario</code></td><td>usuario.model.ts</td><td>id, nombre, email, rol: UserRole, activo: boolean</td></tr>
+          <tr><td><code>Producto</code></td><td>producto.model.ts</td><td>id, nombre, descripcion, precio, disponible</td></tr>
+          <tr><td><code>Mesa</code></td><td>mesa.model.ts</td><td>id, numero, capacidad, estado: MesaEstado</td></tr>
+          <tr><td><code>PedidoResponse</code></td><td>pedido.model.ts</td><td>id, fecha, estado, mesa, usuario, detalles[], pago</td></tr>
+          <tr><td><code>DetallePedidoResponse</code></td><td>pedido.model.ts</td><td>id, pedido_id, producto, cantidad, precio_unitario, subtotal, estado</td></tr>
+          <tr><td><code>PagoResponse</code></td><td>pedido.model.ts</td><td>id, pedido_id, total, fecha</td></tr>
+          <tr><td><code>LoginRequest</code></td><td>auth.model.ts</td><td>email, password, recaptcha_token</td></tr>
+          <tr><td><code>TokenResponse</code></td><td>auth.model.ts</td><td>access_token, token_type</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 9. SERVICIOS -->
+    <section id="services">
+      <h2>9. Servicios</h2>
+
+      <h3>AuthService</h3>
+      <p>Servicio central de sesión. Gestiona el ciclo completo de autenticación con Angular Signals.</p>
+      <ul>
+        <li><strong>Signals reactivos:</strong> <code>user()</code>, <code>userRole()</code>, <code>isAuthenticated()</code></li>
+        <li><strong>Persistencia:</strong> Token y perfil guardados en <code>localStorage</code></li>
+        <li><strong>Restauración de sesión:</strong> Al arrancar, valida el token almacenado y recarga el perfil</li>
+        <li><strong>Inactividad automática:</strong> Cierra sesión tras 30 minutos sin actividad del usuario</li>
+        <li><strong>Decodificación JWT:</strong> Usa <code>jwt-decode</code> para extraer <code>user_id</code> y <code>exp</code></li>
+        <li><strong>Redirección post-login:</strong> Redirige automáticamente según el rol del usuario</li>
+      </ul>
+
+      <h3>PedidoService</h3>
+      <table>
+        <thead><tr><th>Método</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>getAll()</code></td><td>Lista todos los pedidos</td></tr>
+          <tr><td><code>getById(id)</code></td><td>Obtiene un pedido por ID</td></tr>
+          <tr><td><code>create(data)</code></td><td>Crea un nuevo pedido con ítems</td></tr>
+          <tr><td><code>cerrar(pedidoId)</code></td><td>Cambia estado a CERRADO</td></tr>
+          <tr><td><code>registrarPago(pedidoId)</code></td><td>Registra el pago del pedido</td></tr>
+          <tr><td><code>addDetalles(pedidoId, data)</code></td><td>Agrega productos a un pedido abierto</td></tr>
+          <tr><td><code>updateItems(pedidoId, data)</code></td><td>Modifica cantidades de ítems existentes</td></tr>
+          <tr><td><code>delete(id)</code></td><td>Elimina un pedido</td></tr>
+        </tbody>
+      </table>
+
+      <h3>DetallePedidoService</h3>
+      <table>
+        <thead><tr><th>Método</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>getAll()</code></td><td>Lista todos los ítems (usado por cocina)</td></tr>
+          <tr><td><code>getByPedido(pedidoId)</code></td><td>Ítems de un pedido específico</td></tr>
+          <tr><td><code>updateEstado(id, data)</code></td><td>Cambia estado: PENDIENTE→PREPARANDO→LISTO</td></tr>
+          <tr><td><code>delete(id)</code></td><td>Elimina un ítem del pedido</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Otros servicios</h3>
+      <table>
+        <thead><tr><th>Servicio</th><th>Métodos clave</th></tr></thead>
+        <tbody>
+          <tr><td><code>ProductoService</code></td><td>getAll, getById, create, update, delete</td></tr>
+          <tr><td><code>MesaService</code></td><td>getAll, getDisponibles, getById, create, delete</td></tr>
+          <tr><td><code>UsuarioService</code></td><td>getAll, getById, create, update, delete</td></tr>
+          <tr><td><code>PagoService</code></td><td>getAll, getById, filtrarPorFecha</td></tr>
+          <tr><td><code>RecaptchaService</code></td><td>execute(action) — carga el script de reCAPTCHA v3 y obtiene un token</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 10. API ENDPOINTS -->
+    <section id="api">
+      <h2>10. Mapa de endpoints consumidos</h2>
+      <p>Base URL configurada en <code>environment.ts</code> como <code>apiUrl</code>.</p>
+
+      <h3>Autenticación</h3>
+      <div class="endpoint"><span class="badge post">POST</span> /auth/login</div>
+      <div class="endpoint"><span class="badge post">POST</span> /auth/request-reset</div>
+      <div class="endpoint"><span class="badge post">POST</span> /auth/reset-password</div>
+
+      <h3>Usuarios</h3>
+      <div class="endpoint"><span class="badge get">GET</span> /usuarios/</div>
+      <div class="endpoint"><span class="badge get">GET</span> /usuarios/{id}</div>
+      <div class="endpoint"><span class="badge post">POST</span> /usuarios/</div>
+      <div class="endpoint"><span class="badge put">PUT</span> /usuarios/{id}</div>
+      <div class="endpoint"><span class="badge del">DELETE</span> /usuarios/{id}</div>
+
+      <h3>Productos</h3>
+      <div class="endpoint"><span class="badge get">GET</span> /productos/</div>
+      <div class="endpoint"><span class="badge get">GET</span> /productos/{id}</div>
+      <div class="endpoint"><span class="badge post">POST</span> /productos/</div>
+      <div class="endpoint"><span class="badge put">PUT</span> /productos/{id}</div>
+      <div class="endpoint"><span class="badge del">DELETE</span> /productos/{id}</div>
+
+      <h3>Mesas</h3>
+      <div class="endpoint"><span class="badge get">GET</span> /mesas/</div>
+      <div class="endpoint"><span class="badge get">GET</span> /mesas/disponibles</div>
+      <div class="endpoint"><span class="badge get">GET</span> /mesas/{id}</div>
+      <div class="endpoint"><span class="badge post">POST</span> /mesas/</div>
+      <div class="endpoint"><span class="badge del">DELETE</span> /mesas/{id}</div>
+
+      <h3>Pedidos</h3>
+      <div class="endpoint"><span class="badge get">GET</span> /pedidos/</div>
+      <div class="endpoint"><span class="badge get">GET</span> /pedidos/{id}</div>
+      <div class="endpoint"><span class="badge post">POST</span> /pedidos/</div>
+      <div class="endpoint"><span class="badge post">POST</span> /pedidos/{id}/cerrar</div>
+      <div class="endpoint"><span class="badge post">POST</span> /pedidos/{id}/pago</div>
+      <div class="endpoint"><span class="badge post">POST</span> /pedidos/{id}/detalles</div>
+      <div class="endpoint"><span class="badge patch">PATCH</span> /pedidos/{id}/items</div>
+      <div class="endpoint"><span class="badge del">DELETE</span> /pedidos/{id}</div>
+
+      <h3>Detalle de Pedidos</h3>
+      <div class="endpoint"><span class="badge get">GET</span> /detalle-pedidos/</div>
+      <div class="endpoint"><span class="badge get">GET</span> /detalle-pedidos/pedido/{pedidoId}</div>
+      <div class="endpoint"><span class="badge get">GET</span> /detalle-pedidos/{id}</div>
+      <div class="endpoint"><span class="badge patch">PATCH</span> /detalle-pedidos/{id}</div>
+      <div class="endpoint"><span class="badge del">DELETE</span> /detalle-pedidos/{id}</div>
+
+      <h3>Pagos</h3>
+      <div class="endpoint"><span class="badge get">GET</span> /pagos/</div>
+      <div class="endpoint"><span class="badge get">GET</span> /pagos/{id}</div>
+      <div class="endpoint"><span class="badge get">GET</span> /pagos/filtrar?fecha_inicio=&amp;fecha_fin=</div>
+    </section>
+
+    <!-- 11. COMPONENTES AUTH -->
+    <section id="auth-comp">
+      <h2>11. Componentes — Módulo Auth</h2>
+
+      <h3>LoginComponent</h3>
+      <ul>
+        <li>Formulario con <code>FormsModule</code> (two-way binding).</li>
+        <li>Ejecuta reCAPTCHA v3 antes de enviar credenciales.</li>
+        <li>Llama a <code>AuthService.login()</code> → <code>AuthService.fetchCurrentUser()</code>.</li>
+        <li>Redirige automáticamente según el rol: ADMIN→<code>/admin</code>, MESERO→<code>/mesero</code>, COCINA→<code>/cocina</code>.</li>
+        <li>Usa signals (<code>loading</code>, <code>errorMessage</code>) para el estado del formulario.</li>
+        <li>Previene doble envío verificando <code>loading()</code> al inicio.</li>
+      </ul>
+
+      <h3>RequestResetComponent / ResetPasswordComponent</h3>
+      <ul>
+        <li>Flujo de dos pasos para recuperación de contraseña.</li>
+        <li>Envía email para solicitar token → confirma con token + nueva contraseña.</li>
+      </ul>
+    </section>
+
+    <!-- 12. COMPONENTES ADMIN -->
+    <section id="admin-comp">
+      <h2>12. Componentes — Módulo Admin</h2>
+
+      <h3>DashboardComponent</h3>
+      <p>Vista de bienvenida con links de navegación a todos los módulos. Inyecta <code>AuthService</code> para mostrar datos del usuario y gestionar el logout.</p>
+
+      <h3>UsuarioListComponent / UsuarioFormComponent</h3>
+      <ul>
+        <li>CRUD completo de usuarios del sistema.</li>
+        <li>El formulario detecta si es creación o edición según la presencia del parámetro <code>:id</code> en la ruta.</li>
+        <li>Permite activar/desactivar cuentas y asignar roles.</li>
+      </ul>
+
+      <h3>ProductoListComponent / ProductoFormComponent</h3>
+      <ul>
+        <li>Gestión del catálogo de productos.</li>
+        <li>El campo <code>disponible</code> controla si el producto aparece al crear pedidos.</li>
+      </ul>
+
+      <h3>MesaListComponent / MesaFormComponent</h3>
+      <ul>
+        <li>Gestión de mesas del restaurante.</li>
+        <li>Solo permite crear mesas; el estado es gestionado por el backend al crear/cerrar pedidos.</li>
+      </ul>
+
+      <h3>PagoListComponent</h3>
+      <ul>
+        <li>Lista de solo lectura de pagos registrados.</li>
+        <li>Usa <code>PagoService.filtrarPorFecha()</code> para filtrado por rango de fechas.</li>
+      </ul>
+    </section>
+
+    <!-- 13. COMPONENTES MESERO -->
+    <section id="mesero-comp">
+      <h2>13. Componentes — Módulo Mesero</h2>
+
+      <h3>MesasViewComponent</h3>
+      <ul>
+        <li>Carga todas las mesas con <code>MesaService.getAll()</code>.</li>
+        <li>Al hacer clic en una mesa libre navega a <code>/mesero/pedidos/nuevo?mesa=:id</code>.</li>
+        <li>Usa signal <code>mesas</code> para renderizado reactivo.</li>
+      </ul>
+
+      <h3>PedidoCreateComponent</h3>
+      <ul>
+        <li>Carga mesas libres (<code>getDisponibles()</code>) y productos disponibles al iniciar.</li>
+        <li>Implementa un <strong>carrito local</strong> con signal <code>carrito</code> de tipo <code>ItemCarrito[]</code>.</li>
+        <li>Computed signal <code>productosFiltrados</code> para búsqueda en tiempo real por nombre.</li>
+        <li>Computed signal <code>totalEstimado()</code> para mostrar el total acumulado.</li>
+        <li>Al confirmar, llama a <code>PedidoService.create()</code> con el array de ítems.</li>
+      </ul>
+
+      <h3>PedidoListComponent</h3>
+      <ul>
+        <li>Computed signal <code>pedidosOrdenados</code>: los ABIERTOS primero, luego los CERRADOS, ambos grupos por fecha descendente.</li>
+        <li>Paginación de 10 elementos por página con computed signals.</li>
+        <li>Búsqueda por ID con <code>PedidoService.getById()</code>.</li>
+      </ul>
+
+      <h3>PedidoDetailComponent</h3>
+      <p>Componente más complejo del módulo mesero. Gestiona el ciclo completo de un pedido:</p>
+      <ul>
+        <li>Signals: <code>pedido</code>, <code>message</code>, <code>mostrarModal</code>, <code>productos</code>, <code>itemsNuevos</code>, <code>mostrarModalEditar</code>, <code>detalleEditando</code>, <code>cantidadEditar</code></li>
+        <li>Modal para agregar productos: carga <code>ProductoService.getAll()</code> solo la primera vez (lazy)</li>
+        <li>Modal para editar cantidad: llama a <code>PedidoService.updateItems()</code></li>
+        <li>Eliminar ítem: llama a <code>DetallePedidoService.delete()</code></li>
+        <li>Finalizar pedido: encadena <code>cerrar()</code> → <code>registrarPago()</code> con SweetAlert2 de confirmación</li>
+        <li>Eliminar pedido: SweetAlert2 de confirmación → <code>PedidoService.delete()</code> → navega a <code>/mesero/pedidos</code></li>
+      </ul>
+    </section>
+
+    <!-- 14. COMPONENTES COCINA -->
+    <section id="cocina-comp">
+      <h2>14. Componentes — Módulo Cocina</h2>
+
+      <h3>ProduccionComponent</h3>
+      <ul>
+        <li>Carga todos los detalles de pedidos con <code>DetallePedidoService.getAll()</code>.</li>
+        <li>Signal <code>filtroPedidoId</code> + computed <code>detallesFiltrados</code> para filtrar por ID de pedido.</li>
+        <li>Método <code>cambiarEstado(id, nuevoEstado)</code> llama a <code>DetallePedidoService.updateEstado()</code> y recarga la lista.</li>
+        <li>No tiene acceso a crear, cerrar ni eliminar pedidos.</li>
+      </ul>
+    </section>
+
+    <!-- 15. SEGURIDAD -->
+    <section id="security">
+      <h2>15. Seguridad</h2>
+
+      <h3>Autenticación JWT</h3>
+      <ul>
+        <li>El token se almacena en <code>localStorage</code> bajo la clave <code>access_token</code>.</li>
+        <li>En cada petición HTTP se adjunta automáticamente vía <code>authInterceptor</code>.</li>
+        <li>La expiración del token se valida decodificando el campo <code>exp</code> del JWT.</li>
+        <li>Al detectar un <code>401</code>, el <code>errorInterceptor</code> limpia el storage y redirige al login.</li>
+      </ul>
+
+      <h3>Protección de rutas</h3>
+      <ul>
+        <li>Doble capa: <code>authGuard</code> (sesión activa) + <code>roleGuard</code> (rol autorizado).</li>
+        <li>Cualquier ruta no encontrada redirige a <code>/login</code>.</li>
+      </ul>
+
+      <h3>reCAPTCHA v3</h3>
+      <ul>
+        <li>El script de Google reCAPTCHA se carga dinámicamente en el cliente.</li>
+        <li>Se ejecuta con acción <code>'login'</code> antes de enviar las credenciales.</li>
+        <li>El token generado se incluye en el body de <code>POST /auth/login</code> para validación en backend.</li>
+      </ul>
+
+      <h3>Cierre por inactividad</h3>
+      <ul>
+        <li>El <code>AuthService</code> escucha eventos <code>mousemove</code>, <code>keydown</code>, <code>click</code> y <code>touchstart</code>.</li>
+        <li>Tras <strong>30 minutos</strong> sin actividad, ejecuta <code>logout()</code> automáticamente.</li>
+        <li>Solo se activa en el navegador (no en SSR).</li>
+      </ul>
+
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <span>El <code>localStorage</code> no es accesible en SSR. Todos los accesos están protegidos con la verificación <code>typeof localStorage !== 'undefined'</code> o con <code>isPlatformBrowser()</code>.</span>
+      </div>
+    </section>
+
+    <!-- 16. ENTORNOS -->
+    <section id="env">
+      <h2>16. Variables de entorno</h2>
+      <table>
+        <thead><tr><th>Variable</th><th>Desarrollo</th><th>Producción</th></tr></thead>
+        <tbody>
+          <tr><td><code>apiUrl</code></td><td><code>http://localhost:3000</code></td><td><code>http://localhost:8000</code></td></tr>
+          <tr><td><code>recaptchaSiteKey</code></td><td><code>6Leet...ydty</code></td><td><em>Configurar con clave real</em></td></tr>
+          <tr><td><code>production</code></td><td><code>false</code></td><td><code>true</code></td></tr>
+        </tbody>
+      </table>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <span>Antes de desplegar en producción, actualiza <code>environment.prod.ts</code> con la URL real del backend y la Site Key de reCAPTCHA de producción.</span>
+      </div>
+    </section>
+
+    <!-- 17. BUILD -->
+    <section id="build">
+      <h2>17. Build y despliegue</h2>
+
+      <h3>Comandos disponibles</h3>
+      <table>
+        <thead><tr><th>Comando</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td><code>npm start</code></td><td>Servidor de desarrollo en <code>localhost:4200</code></td></tr>
+          <tr><td><code>npm run build</code></td><td>Build de producción en <code>/dist</code></td></tr>
+          <tr><td><code>npm run watch</code></td><td>Build en modo watch (desarrollo continuo)</td></tr>
+          <tr><td><code>npm test</code></td><td>Ejecuta pruebas con Vitest</td></tr>
+          <tr><td><code>npm run serve:ssr:gastrohub-1.1</code></td><td>Sirve el build SSR con Node.js</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Flujo de build SSR</h3>
+      <div class="flow-box">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-body">
+            <strong>ng build</strong>
+            <span>Compila la app y genera los artefactos en <code>dist/gastrohub-1.1/</code></span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-body">
+            <strong>dist/gastrohub-1.1/server/server.mjs</strong>
+            <span>Servidor Express generado por <code>@angular/ssr</code> que sirve el HTML pre-renderizado</span>
+          </div>
+        </div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-body">
+            <strong>Hidratación en el cliente</strong>
+            <span>Angular toma el HTML del servidor y adjunta los eventos con <code>withEventReplay()</code></span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Configuración TypeScript relevante</h3>
+      <ul>
+        <li><strong>strict: true</strong> — modo estricto completo habilitado</li>
+        <li><strong>target: ES2022</strong> — output moderno</li>
+        <li><strong>strictTemplates: true</strong> — templates Angular tipados estrictamente</li>
+        <li><strong>noImplicitOverride / noImplicitReturns</strong> — reglas de calidad de código</li>
+      </ul>
+
+      <div style="margin-top:40px;padding-top:24px;border-top:1px solid #1e2a3a;text-align:center;color:#4a5568;font-size:12px;">
+        GastroHub v1.0 &nbsp;|&nbsp; Manual Técnico Frontend &nbsp;|&nbsp; Abril 2026<br/>
+        Angular 21 · TypeScript 5.9 · SSR con Express 5
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
